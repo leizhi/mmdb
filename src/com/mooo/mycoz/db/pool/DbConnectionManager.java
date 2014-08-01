@@ -55,7 +55,6 @@
 package com.mooo.mycoz.db.pool;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Vector;
 
 import com.mooo.mycoz.db.conf.DbConf;
@@ -150,25 +149,4 @@ public class DbConnectionManager {
     	return getConnection(DbConf.getInstance().getMydb().getDefaultPool());
     }
     
-	public static void main(String args[]) {
-			for(int i=0;i<1073741824;i++){
-				Connection conn = null;
-				try{
-					conn=getConnection();
-					
-					System.out.println("loop->>>"+i);
-					System.out.println("getConnection->>>"+conn);
-				}catch(Exception e){
-					e.printStackTrace();
-				}finally{
-					try {
-						conn.close();
-						System.out.println("conn.close->>>"+conn);
-
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-  } 
 }
