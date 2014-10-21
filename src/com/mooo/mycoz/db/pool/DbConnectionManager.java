@@ -103,19 +103,13 @@ public class DbConnectionManager {
     public synchronized static Connection getConnection(String poolName) {
         Connection conn=null;
         
-        System.out.println("poolName :" +poolName);
-        
         DbConnectionPool dbConnectionPool = DbConf.getInstance().getDbConnectionPool(poolName);
         ConnectionProvider connectionProvider = getDbConnectionPool(dbConnectionPool.getPoolname());
         
-        System.out.println("dbConnectionPool :" +dbConnectionPool);
-        System.out.println("connectionProvider :" +connectionProvider);
-
         if (connectionProvider == null) {
             synchronized (providerLock) {
                 if (connectionProvider == null) {
 					String className = dbConnectionPool.getConnectionProvider();
-			        System.out.println("className :" +className);
 
                     if (className != null) {
                         //Attempt to load the class.
