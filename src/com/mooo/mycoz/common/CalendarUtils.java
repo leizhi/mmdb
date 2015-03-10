@@ -138,4 +138,12 @@ public class CalendarUtils {
 	public static Date dparse2(String dateValue) throws ParseException{
 		return dtparse(dateValue,NYMD);
 	}
+	
+	public static String dformat3(Date date){
+		return dtformat(date,NYMDH);
+	}
+	
+	public static Date dparse3(String dateValue) throws ParseException{
+		return dtparse(dateValue,NYMDH);
+	}
 }
