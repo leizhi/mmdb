@@ -312,12 +312,14 @@ public class StringUtils {
 	private static byte toByte(char c) {
 		return (byte) "0123456789ABCDEF".indexOf(c);
 	}
-	
-	/**
+
+
+
+    /**
 	 * Convert hex string to byte[]
-	 * 
-	 * @param hexString
-	 *            the hex string
+	 *
+     * @param hex
+     *
 	 * @return byte[]
 	 */
 	public static byte[] toBytes(String hex) {
@@ -786,17 +788,22 @@ public class StringUtils {
 
 	public synchronized static final String prefixToUpperNot(String str,String prefix){
 		String result = null;
-		
+
 		if (str != null && str.length() > 1 && prefix!=null && !prefix.equals("")) {
 			result = prefixToUpper(str, prefix,false);
 			result = result.substring(0, 1).toLowerCase() + result.substring(1);
 		} else{
 			result=str;
 		}
-		
+
 		return result;
 	}
-	
+
+	public synchronized static final String upperFirst(String str,String prefix){
+		String ret = prefixToUpperNot(str,prefix);
+		return ret.replaceFirst(ret.substring(0, 1),ret.substring(0, 1).toUpperCase()) ;
+	}
+
 	//database field change bean field
 	public synchronized static final String prefixToUpper(String str,String prefix,boolean enableCase){
 		
@@ -848,6 +855,8 @@ public class StringUtils {
 		
 		return result;
 	}
+
+
 	//split for prefix,enable begin
 	public synchronized static final String upperToPrefix(String str,String prefix){
 		return upperToPrefix(str,prefix,true);

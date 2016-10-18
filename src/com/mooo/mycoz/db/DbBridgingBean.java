@@ -30,8 +30,6 @@ public class DbBridgingBean {
 	 *            属性
 	 * @param value
 	 *            参数
-	 * @param format
-	 *            参数格式化规格
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
 	 * @throws IllegalAccessException
@@ -255,8 +253,6 @@ public class DbBridgingBean {
 	 *            做参数的对象的属性名称
 	 * @param value
 	 *            参数
-	 * @param format
-	 *            参数格式化规格
 	 * @throws NoSuchMethodException
 	 * @throws InvocationTargetException
 	 * @throws IllegalAccessException
@@ -380,11 +376,11 @@ public class DbBridgingBean {
 		
 		sql = "SELECT  * FROM "+table;
 		System.out.println(sql);
-		buffer.append(StringUtils.prefixToUpperNot(table,prefix));
+		buffer.append(StringUtils.upperFirst(table,prefix));
 		//buffer.append(" extends DBObject {\n");
 		buffer.append(" extends DBObject{\n");
 
-		System.out.println("beanName="+StringUtils.prefixToUpperNot(table,prefix));
+		System.out.println("beanName="+StringUtils.upperFirst(table,prefix));
 
 		stmt = con.createStatement();
 		rs = stmt.executeQuery(sql);
@@ -420,7 +416,7 @@ public class DbBridgingBean {
 			}else if (type == Types.SMALLINT){
 				buffer.append("\tprivate Short "+ columnName + ";\n");
 				gsMethod.append(StringUtils.createMethod(columnName, "Short"));
-			}else if (type == Types.INTEGER){
+			}else if (type == Types.INTEGER || type == Types.BIGINT){
 				buffer.append("\tprivate Integer "+ columnName + ";\n");
 				gsMethod.append(StringUtils.createMethod(columnName, "Integer"));
 			}else if (type==Types.DECIMAL){
