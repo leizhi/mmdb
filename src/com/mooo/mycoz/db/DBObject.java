@@ -1,23 +1,18 @@
 package com.mooo.mycoz.db;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.mooo.mycoz.common.StringUtils;
+import com.mooo.mycoz.db.conf.DbConf;
+import com.mooo.mycoz.db.pool.DbConnectionManager;
+import com.mooo.mycoz.db.sql.ProcessSQL;
+import com.mooo.mycoz.db.sql.SQLFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.mooo.mycoz.common.StringUtils;
-import com.mooo.mycoz.db.pool.DbConnectionManager;
-import com.mooo.mycoz.db.sql.SQLFactory;
-import com.mooo.mycoz.db.sql.ProcessSQL;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DBObject implements DbProcess{
+public class DBObject<T> implements DbProcess{
 
 	private static Log log = LogFactory.getLog(DBObject.class);
 
@@ -26,9 +21,17 @@ public class DBObject implements DbProcess{
 	 */
 
 	private ProcessSQL processSQL=null;
-	
+
+	private String prefix=null;
+
 	public DBObject(){
 		processSQL=SQLFactory.getInstance();
+		
+		prefix = DbConf.getInstance().getDbHumpInterval();
+		if(prefix !=null && prefix.equals("case")){
+			prefix = null;
+		}
+
 	}
 	
 	/**
@@ -255,30 +258,30 @@ public class DBObject implements DbProcess{
 
 				for (int i = 1; i < rsmd.getColumnCount() + 1; i++) {
 					type = rsmd.getColumnType(i);
-					
+
 					if(type == Types.TIMESTAMP){
 						DbBridgingBean.bindProperty(bean,
-								StringUtils.formatHump(rsmd.getColumnName(i),null),
+								StringUtils.prefixToUpperNot(rsmd.getColumnName(i),prefix),
 								result.getTimestamp(i));
 					}else if(type == Types.DATE){
 						DbBridgingBean.bindProperty(bean,
-								StringUtils.formatHump(rsmd.getColumnName(i),null),
-								result.getDate(i));	
+								StringUtils.prefixToUpperNot(rsmd.getColumnName(i),prefix),
+								result.getDate(i));
 					}else if(type == Types.SMALLINT){
 						DbBridgingBean.bindProperty(bean,
-								StringUtils.formatHump(rsmd.getColumnName(i),null),
+								StringUtils.prefixToUpperNot(rsmd.getColumnName(i),prefix),
 								result.getShort(i));
 					}else if(type == Types.INTEGER){
 						DbBridgingBean.bindProperty(bean,
-								StringUtils.formatHump(rsmd.getColumnName(i),null),
+								StringUtils.prefixToUpperNot(rsmd.getColumnName(i),prefix),
 								result.getInt(i));
 					}else if(type == Types.BIGINT){
 						DbBridgingBean.bindProperty(bean,
-								StringUtils.formatHump(rsmd.getColumnName(i),null),
-								result.getLong(i));
+								StringUtils.prefixToUpperNot(rsmd.getColumnName(i),prefix),
+								result.getInt(i));
 					}else{
 						DbBridgingBean.bindProperty(bean,
-								StringUtils.formatHump(rsmd.getColumnName(i),null),
+								StringUtils.prefixToUpperNot(rsmd.getColumnName(i),prefix),
 								result.getString(i));
 					}
 
@@ -350,27 +353,27 @@ public class DBObject implements DbProcess{
 					type = rsmd.getColumnType(i);
 					if(type == Types.TIMESTAMP || type == Types.DATE){
 						DbBridgingBean.bindProperty(this,
-								StringUtils.prefixToUpper(rsmd.getColumnName(i),null,true),
+								StringUtils.prefixToUpper(rsmd.getColumnName(i),prefix,true),
 								result.getTimestamp(i));
 					}else if(type == Types.INTEGER || type == Types.SMALLINT){
 						DbBridgingBean.bindProperty(this,
-								StringUtils.prefixToUpper(rsmd.getColumnName(i),null,true),
+								StringUtils.prefixToUpper(rsmd.getColumnName(i),prefix,true),
 								result.getInt(i));
 					}else if(type == Types.BIGINT){
 						DbBridgingBean.bindProperty(this,
-								StringUtils.prefixToUpper(rsmd.getColumnName(i),null,true),
+								StringUtils.prefixToUpper(rsmd.getColumnName(i),prefix,true),
 								result.getLong(i));
 					}else if(type == Types.DOUBLE){
 						DbBridgingBean.bindProperty(this,
-								StringUtils.prefixToUpper(rsmd.getColumnName(i),null,true),
+								StringUtils.prefixToUpper(rsmd.getColumnName(i),prefix,true),
 								result.getDouble(i));
 					}else if(type == Types.FLOAT){
 						DbBridgingBean.bindProperty(this,
-								StringUtils.prefixToUpper(rsmd.getColumnName(i),null,true),
+								StringUtils.prefixToUpper(rsmd.getColumnName(i),prefix,true),
 								result.getFloat(i));
 					}else {
 						DbBridgingBean.bindProperty(this,
-								StringUtils.prefixToUpper(rsmd.getColumnName(i),null,true),
+								StringUtils.prefixToUpper(rsmd.getColumnName(i),prefix,true),
 								result.getString(i));
 					}
 				}

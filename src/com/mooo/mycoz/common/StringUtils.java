@@ -839,20 +839,20 @@ public class StringUtils {
 				else
 					return str.substring(0, 1).toLowerCase()+str.substring(1);
 		}
-		
+
 		String result="";
 
 		Pattern p = Pattern.compile("[A-Z]+[a-z]*");
 		Matcher m = p.matcher(str);
-		
+
 		while(m.find()){
 			result += prefix+m.group().toLowerCase();
 		}
-		
+
 		if(result != null && result.length() > 2) {
 			result = result.substring(1);
 		}
-		
+
 		return result;
 	}
 
@@ -865,7 +865,7 @@ public class StringUtils {
 	public synchronized static final String upperToPrefixNot(String str,String prefix){
 		return upperToPrefix(str,prefix,false);
 	}
-	
+
 	//default not split,enable begin
 	public synchronized static final String upperToPrefix(String str){
 		return upperToPrefix(str,null);
@@ -874,29 +874,29 @@ public class StringUtils {
 	public synchronized static final String upperToPrefixNot(String str){
 		return upperToPrefixNot(str,null);
 	}
-	
+
 	//default split case , specially prefix
 	public synchronized static final String formatHump(String str,String prefix){
-		
+
 		if(prefix==null || prefix.equals(""))
 			return str;
-		
+
 		String result="";
 
 		Pattern p = Pattern.compile("[A-Z]*");
 		Matcher m = p.matcher(str);
-		
+
 		while(m.find()){
 			result += prefix+m.group().toLowerCase();
 		}
-		
+
 		if(result != null && result.length() > 2) {
 			result = result.substring(1);
 		}
-		
+
 		return result;
 	}
-	
+
 	public static final String getMethod(String columnName,String returnType){
 		
 		StringBuilder createBuf = new StringBuilder();
