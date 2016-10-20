@@ -1,10 +1,10 @@
 package com.mooo.mycoz.db.conf;
 
-import java.util.Vector;
-
 import org.apache.commons.digester.Digester;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.Vector;
 
 public class DbConf {
 	private static Log log = LogFactory.getLog(DbConf.class);
@@ -46,8 +46,7 @@ public class DbConf {
 			digester.addSetProperties("Mydb/DbConnectionPool", "username","username"); 
 			digester.addSetProperties("Mydb/DbConnectionPool", "password","password"); 
 			digester.addSetProperties("Mydb/DbConnectionPool", "dbsql","dbsql"); 
-			digester.addSetProperties("Mydb/DbConnectionPool", "dbCase","dbCase"); 
-			digester.addSetProperties("Mydb/DbConnectionPool", "dbHumpInterval","dbHumpInterval"); 
+			digester.addSetProperties("Mydb/DbConnectionPool", "dbHumpInterval","dbHumpInterval");
 			digester.addSetProperties("Mydb/DbConnectionPool", "connectionTimeout","connectionTimeout"); 
 			digester.addSetProperties("Mydb/DbConnectionPool", "minConnections","minConnections"); 
 			digester.addSetProperties("Mydb/DbConnectionPool", "maxConnections","maxConnections"); 
@@ -123,20 +122,6 @@ public class DbConf {
 		return getDbHumpInterval(mydb.getDefaultPool());
 	}
 
-	public boolean getDbCase(String poolName){
-		
-		Vector<DbConnectionPool> pools = mydb.getPools();
-		for(DbConnectionPool dcpool:pools){
-			if(dcpool.getPoolname().equals(poolName))
-				return dcpool.getDbCase();
-		}
-		return true;
-	}
-	
-	public boolean getDbCase(){
-		return getDbCase(mydb.getDefaultPool());
-	}
-	
 	public static void main(String args[]) {
 //        System.out.println("Hello World!");
 		

@@ -1,24 +1,18 @@
 package com.mooo.mycoz.db;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
+import com.mooo.mycoz.common.StringUtils;
+import com.mooo.mycoz.db.conf.DbConf;
+import com.mooo.mycoz.db.pool.DbConnectionManager;
+import com.mooo.mycoz.db.sql.MysqlMultiSQL;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.mooo.mycoz.common.StringUtils;
-import com.mooo.mycoz.db.conf.DbConf;
-import com.mooo.mycoz.db.pool.DbConnectionManager;
-import com.mooo.mycoz.db.sql.MysqlMultiSQL;
 
 public class MultiDBObject extends MysqlMultiSQL implements MultiDbProcess {
 	
@@ -68,28 +62,26 @@ public class MultiDBObject extends MysqlMultiSQL implements MultiDbProcess {
 					
 					allRow.put(key, bean);
 				}
-				
+
 				for (int i=1; i < rsmd.getColumnCount()+1; i++) {
 					
 					catalog = rsmd.getCatalogName(i);
 					table = rsmd.getTableName(i);
-					
+
 					columnLabel = rsmd.getColumnLabel(i);
 					
 					aliasT = columnLabel.substring(0,columnLabel.indexOf('_'));
 					column = columnLabel.substring(columnLabel.indexOf('_')+1);
 
-					int type = DbUtil.type(myConn,catalog,table,StringUtils.upperToPrefix(column,null));
+					int type = DbUtil.type(myConn,catalog,table,StringUtils.splitToHump(column,DbConf.getInstance().getDbHumpInterval(),true));
 					
 					if(allRow.containsKey(aliasT)){
 						Object bean = allRow.get(aliasT);
 						
-						boolean enableCase = new Boolean(DbConf.getInstance().getDbCase());
-						
 						if(type == Types.TIMESTAMP){
-							DbBridgingBean.bindProperty(bean,StringUtils.prefixToUpper(column,null,enableCase),result.getTimestamp(i));
+							DbBridgingBean.bindProperty(bean,StringUtils.splitToHump(column,DbConf.getInstance().getDbHumpInterval(),true),result.getTimestamp(i));
 						}else {
-							DbBridgingBean.bindProperty(bean,StringUtils.prefixToUpper(column,null,enableCase),result.getString(i));	
+							DbBridgingBean.bindProperty(bean,StringUtils.splitToHump(column,DbConf.getInstance().getDbHumpInterval(),true),result.getString(i));
 						}					
 					}					
 				}

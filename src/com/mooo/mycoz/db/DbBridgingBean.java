@@ -336,12 +336,12 @@ public class DbBridgingBean {
 		System.out.println(con);
 		
 		DatabaseMetaData db =  DbConnectionManager.getConnection().getMetaData();
-		rs = db.getPrimaryKeys(catalog, null, StringUtils.prefixToUpperNot(table, null));
+		rs = db.getPrimaryKeys(catalog, null, StringUtils.splitToHump(table, null,false));
 		rsmd = rs.getMetaData();
 		
 		while (rs.next()) {
 			for (int i = 1; i < rsmd.getColumnCount()+1; i++) {
-				System.out.print(StringUtils.prefixToUpperNot(rs.getString(i),prefix) + " ");
+				System.out.print(StringUtils.splitToHump(rs.getString(i),prefix,false) + " ");
 			}
 			System.out.println();
 		}
@@ -359,7 +359,7 @@ public class DbBridgingBean {
 		rs = db.getColumns(catalog, null, table, null);
 		while (rs.next()) {
 		for (int i = 1; i < 19; i++) {
-		System.out.print(StringUtils.prefixToUpperNot(rs.getString(i),prefix) + " ");
+		System.out.print(StringUtils.splitToHump(rs.getString(i),prefix,false) + " ");
 		}
 		System.out.println("+++++++++++++++++++++++++++++++++");
 
@@ -376,11 +376,10 @@ public class DbBridgingBean {
 		
 		sql = "SELECT  * FROM "+table;
 		System.out.println(sql);
-		buffer.append(StringUtils.upperFirst(table,prefix));
-		//buffer.append(" extends DBObject {\n");
+		buffer.append(StringUtils.splitToHump(table,prefix,true));
 		buffer.append(" extends DBObject{\n");
 
-		System.out.println("beanName="+StringUtils.upperFirst(table,prefix));
+		System.out.println("beanName="+StringUtils.splitToHump(table,prefix,true));
 
 		stmt = con.createStatement();
 		rs = stmt.executeQuery(sql);
@@ -398,9 +397,11 @@ public class DbBridgingBean {
 			precision = rsmd.getPrecision(i+1);
 			scale = rsmd.getScale(i+1);
 			columnName = rsmd.getColumnName(i + 1);
-			columnName = StringUtils.prefixToUpperNot(columnName,prefix);
+			System.out.println("columnName:"+columnName+" Precision: "+ precision+" Scale: "+scale+" columnType: "+ type);
 
-			System.out.println(columnName+" Precision: "+ precision+" Scale: "+scale+" columnType: "+ type);
+			columnName = StringUtils.splitToHump(columnName,prefix,false);
+
+			System.out.println("columnName:"+columnName+" Precision: "+ precision+" Scale: "+scale+" columnType: "+ type);
 
 			if(type == Types.CHAR || type == Types.VARCHAR || type == Types.LONGVARCHAR || type ==Types.NVARCHAR || type==Types.OTHER){
 				buffer.append("\tprivate String "+ columnName + ";\n");

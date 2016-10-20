@@ -770,137 +770,108 @@ public class StringUtils {
 		return m.find();
 	}
 	
-	public synchronized static final String toUppeFirst(String str){
-		return str.substring(0, 1).toUpperCase()+str.substring(1);
-	}
-
-	public synchronized static final String toLowerFirst(String str){
-		return str.substring(0, 1).toLowerCase()+str.substring(1);
-	}
-	
-	public synchronized static final String prefixToUpper(String str){
-		return prefixToUpper(str,"_",false);
-	}
-
-	public synchronized static final String prefixToUpperNot(String str){
-		return prefixToUpperNot(str,"_");
-	}
-
-	public synchronized static final String prefixToUpperNot(String str,String prefix){
-		String result = null;
-
-		if (str != null && str.length() > 1 && prefix!=null && !prefix.equals("")) {
-			result = prefixToUpper(str, prefix,false);
-			result = result.substring(0, 1).toLowerCase() + result.substring(1);
-		} else{
-			result=str;
-		}
-
-		return result;
-	}
-
-	public synchronized static final String upperFirst(String str,String prefix){
-		String ret = prefixToUpperNot(str,prefix);
-		return ret.replaceFirst(ret.substring(0, 1),ret.substring(0, 1).toUpperCase()) ;
-	}
-
 	//database field change bean field
-	public synchronized static final String prefixToUpper(String str,String prefix,boolean enableCase){
-		
-		if(prefix == null)
-			if(enableCase)
-				return str;
-			else
-				return str.toLowerCase();
+//	public synchronized static final String prefixToUpper(String str,String prefix,boolean enableCase){
+//
+//		if(prefix == null)
+//			if(enableCase)
+//				return str;
+//			else
+//				return str.toLowerCase();
+//
+//		if (str != null && str.indexOf(prefix) < 0){
+//			return str.toLowerCase();
+//		}
+//
+//		//spit prefix
+//		String result="";
+//		String tmp="";
+//		StringTokenizer tokens = new StringTokenizer(str, prefix);
+//		while (tokens.hasMoreTokens()) {
+//			tmp = tokens.nextToken();
+//			tmp = tmp.toLowerCase();
+//			result += tmp.substring(0, 1).toUpperCase()+tmp.substring(1);
+//		}
+//
+//		return result;
+//	}
+	public synchronized static String humpToSplit(String word,String prefix) {
+		if(prefix == null || prefix.equalsIgnoreCase("Case"))
+			return word;
 
-		if (str != null && str.indexOf(prefix) < 0){
-			return str.toLowerCase();
-		}
-		
-		//spit prefix
-		String result="";
-		String tmp="";
-		StringTokenizer tokens = new StringTokenizer(str, prefix);
-		while (tokens.hasMoreTokens()) {
-			tmp = tokens.nextToken();
-			tmp = tmp.toLowerCase();
-			result += tmp.substring(0, 1).toUpperCase()+tmp.substring(1);
-		}
-
-		return result;
+		return humpToSplit(word,prefix.charAt(0));
 	}
-	
-	//split for prefix
-	public synchronized static final String upperToPrefix(String str,String prefix,boolean beginEnable){
+		//AaaBbbCcc->aaa_bbb_ccc
+	public synchronized static String humpToSplit(String word,char p){
+		String a1 = "";
+		boolean isLower = Character.isLowerCase(word.charAt(0));
 
-		if(prefix==null || prefix.equals("")){
-				if(beginEnable)
-					return str;
-				else
-					return str.substring(0, 1).toLowerCase()+str.substring(1);
+		for(int i = 0; i < word.length(); i++){
+			char c = word.charAt(i);
+
+			if(isLower && Character.isLowerCase(c)!=isLower) {
+				a1 += p;
+			}
+			isLower = Character.isLowerCase(word.charAt(i));
+
+			a1 += Character.toLowerCase(c);;
 		}
-
-		String result="";
-
-		Pattern p = Pattern.compile("[A-Z]+[a-z]*");
-		Matcher m = p.matcher(str);
-
-		while(m.find()){
-			result += prefix+m.group().toLowerCase();
-		}
-
-		if(result != null && result.length() > 2) {
-			result = result.substring(1);
-		}
-
-		return result;
+		return a1;
 	}
 
-
-	//split for prefix,enable begin
-	public synchronized static final String upperToPrefix(String str,String prefix){
-		return upperToPrefix(str,prefix,true);
-	}
-	//split for prefix,not enable begin
-	public synchronized static final String upperToPrefixNot(String str,String prefix){
-		return upperToPrefix(str,prefix,false);
+	//aaa_bbb_ccc->AaaBbbCcc
+	public synchronized static String splitToHump(String word) {
+		return splitToHump(word,'_',true);
 	}
 
-	//default not split,enable begin
-	public synchronized static final String upperToPrefix(String str){
-		return upperToPrefix(str,null);
-	}
-	//default not split,not enable begin
-	public synchronized static final String upperToPrefixNot(String str){
-		return upperToPrefixNot(str,null);
+	public synchronized static String splitToHump(String word,boolean firstUpper) {
+		return splitToHump(word,'_',false);
 	}
 
-	//default split case , specially prefix
-	public synchronized static final String formatHump(String str,String prefix){
+	public synchronized static String splitToHump(String word,String prefix,boolean firstUpper) {
+		if(word ==null ||prefix==null || prefix.equalsIgnoreCase("Case"))
+			return word;
 
-		if(prefix==null || prefix.equals(""))
-			return str;
+		return splitToHump(word,prefix.charAt(0),firstUpper);
+	}
 
-		String result="";
+	//aaa_bbb_ccc->AaaBbbCcc
+	public synchronized static String splitToHump(String word,char p,boolean firstUpper){
+		String a1 = "";
+		boolean toUpper = firstUpper;
 
-		Pattern p = Pattern.compile("[A-Z]*");
-		Matcher m = p.matcher(str);
+		for(int i = 0; i < word.length(); i++){
+			char c = word.charAt(i);
 
-		while(m.find()){
-			result += prefix+m.group().toLowerCase();
+			if(i==0) {
+				if (firstUpper) {
+					c = Character.toUpperCase(word.charAt(0));
+//					System.out.println("firstUpper:"+firstUpper);
+				}else {
+					c = Character.toLowerCase(word.charAt(0));
+//					System.out.println("firstUpper:"+firstUpper);
+				}
+			}
+
+			if (c==p){
+				toUpper = true;
+				continue;
+			}else{
+				if(toUpper) {
+					c = Character.toUpperCase(c);
+					toUpper = false;
+				}
+			}
+
+			a1 += c;
 		}
-
-		if(result != null && result.length() > 2) {
-			result = result.substring(1);
-		}
-
-		return result;
+		return a1;
 	}
 
 	public static final String getMethod(String columnName,String returnType){
 		
 		StringBuilder createBuf = new StringBuilder();
-		createBuf.append("\tpublic "+returnType+" get"+toUppeFirst(columnName)+"() {\n");
+		createBuf.append("\tpublic "+returnType+" get"+splitToHump(columnName)+"() {\n");
 		createBuf.append("\treturn "+columnName+";\n");
 		createBuf.append("\t}\n");
 
@@ -910,7 +881,7 @@ public class StringUtils {
 	public static final String setMethod(String columnName,String returnType){
 		
 		StringBuilder createBuf = new StringBuilder();
-		createBuf.append("\tpublic void set"+toUppeFirst(columnName)+"("+returnType+" "+columnName+") {\n");
+		createBuf.append("\tpublic void set"+splitToHump(columnName)+"("+returnType+" "+columnName+") {\n");
 		createBuf.append("\t this."+columnName+" = "+columnName+";\n");
 		createBuf.append("\t}\n");
 
@@ -931,34 +902,7 @@ public class StringUtils {
 		}
 		return funName;
 	}
-	/*
-	public static String getCatalog(Class<?> cls,int begin) {
 
-		String value=null;
-		LinkedList<String> stack = new LinkedList<String>();
-
-		String clsName = cls.getName();
-		
-		StringTokenizer st = new StringTokenizer(clsName,".");
-		while(st.hasMoreTokens()){
-			value = st.nextToken();
-			stack.push(value);
-		}
-		
-		int i=0;
-		while(stack.size() > 0){
-			value = (String) stack.pop();
-			
-			if (i==begin){
-				return value;
-			} else{
-				i++;
-			}
-		}
-		
-		return null;
-	}
-	*/
 	public static void noNull(String str) throws NullPointerException{
 		if(str == null || str.equals("")){
 			throw new NullPointerException("input can't null");

@@ -1,16 +1,17 @@
 package com.mooo.mycoz.db;
 
+import com.mooo.mycoz.common.StringUtils;
+import com.mooo.mycoz.db.pool.DbConnectionManager;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
-//import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.mooo.mycoz.common.StringUtils;
-import com.mooo.mycoz.db.pool.DbConnectionManager;
+//import java.sql.ResultSetMetaData;
 
 public class DbUtil {
 	
@@ -63,7 +64,7 @@ public class DbUtil {
 				isClose = true;
 			}
 
-			result = myConn.getMetaData().getPrimaryKeys(catalog,null, StringUtils.upperToPrefix(table, null));
+			result = myConn.getMetaData().getPrimaryKeys(catalog,null, StringUtils.humpToSplit(table, null));
 			
 			while (result.next()) {
 				retrieveList.add(result.getString(4).toLowerCase());

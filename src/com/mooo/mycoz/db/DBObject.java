@@ -261,27 +261,27 @@ public class DBObject<T> implements DbProcess{
 
 					if(type == Types.TIMESTAMP){
 						DbBridgingBean.bindProperty(bean,
-								StringUtils.prefixToUpperNot(rsmd.getColumnName(i),prefix),
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,false),
 								result.getTimestamp(i));
 					}else if(type == Types.DATE){
 						DbBridgingBean.bindProperty(bean,
-								StringUtils.prefixToUpperNot(rsmd.getColumnName(i),prefix),
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,false),
 								result.getDate(i));
 					}else if(type == Types.SMALLINT){
 						DbBridgingBean.bindProperty(bean,
-								StringUtils.prefixToUpperNot(rsmd.getColumnName(i),prefix),
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,false),
 								result.getShort(i));
 					}else if(type == Types.INTEGER){
 						DbBridgingBean.bindProperty(bean,
-								StringUtils.prefixToUpperNot(rsmd.getColumnName(i),prefix),
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,false),
 								result.getInt(i));
 					}else if(type == Types.BIGINT){
 						DbBridgingBean.bindProperty(bean,
-								StringUtils.prefixToUpperNot(rsmd.getColumnName(i),prefix),
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,false),
 								result.getInt(i));
 					}else{
 						DbBridgingBean.bindProperty(bean,
-								StringUtils.prefixToUpperNot(rsmd.getColumnName(i),prefix),
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,false),
 								result.getString(i));
 					}
 
@@ -353,27 +353,27 @@ public class DBObject<T> implements DbProcess{
 					type = rsmd.getColumnType(i);
 					if(type == Types.TIMESTAMP || type == Types.DATE){
 						DbBridgingBean.bindProperty(this,
-								StringUtils.prefixToUpper(rsmd.getColumnName(i),prefix,true),
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
 								result.getTimestamp(i));
 					}else if(type == Types.INTEGER || type == Types.SMALLINT){
 						DbBridgingBean.bindProperty(this,
-								StringUtils.prefixToUpper(rsmd.getColumnName(i),prefix,true),
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
 								result.getInt(i));
 					}else if(type == Types.BIGINT){
 						DbBridgingBean.bindProperty(this,
-								StringUtils.prefixToUpper(rsmd.getColumnName(i),prefix,true),
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
 								result.getLong(i));
 					}else if(type == Types.DOUBLE){
 						DbBridgingBean.bindProperty(this,
-								StringUtils.prefixToUpper(rsmd.getColumnName(i),prefix,true),
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
 								result.getDouble(i));
 					}else if(type == Types.FLOAT){
 						DbBridgingBean.bindProperty(this,
-								StringUtils.prefixToUpper(rsmd.getColumnName(i),prefix,true),
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
 								result.getFloat(i));
 					}else {
 						DbBridgingBean.bindProperty(this,
-								StringUtils.prefixToUpper(rsmd.getColumnName(i),prefix,true),
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
 								result.getString(i));
 					}
 				}

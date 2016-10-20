@@ -1,13 +1,9 @@
 package com.mooo.mycoz.db.sql;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import com.mooo.mycoz.common.StringUtils;
 import com.mooo.mycoz.db.conf.DbConf;
+
+import java.util.*;
 
 public class MysqlMultiSQL implements ProcessMultiSQL {
 
@@ -42,7 +38,8 @@ public class MysqlMultiSQL implements ProcessMultiSQL {
 	}
 	public void addTable(Class<?> clazz, String alias) {
 		objs.put(alias, clazz);
-		tables.put(alias, DbConf.getInstance().getDbname(clazz.getPackage().getName())+"."+clazz.getSimpleName());
+		tables.put(alias, DbConf.getInstance().getDbname(clazz.getPackage().getName())+"."+StringUtils.humpToSplit(clazz.getSimpleName(),DbConf.getInstance().getDbHumpInterval()));
+
 	}
 	
 	public void addTable(String name, String alias) {
@@ -54,7 +51,7 @@ public class MysqlMultiSQL implements ProcessMultiSQL {
 	}
 
 	public void setRetrieveField(String alias, String field) {
-		retrieveFields.add(alias + "." + field);
+		retrieveFields.add(alias + "." + StringUtils.humpToSplit(field,DbConf.getInstance().getDbHumpInterval()));
 	}
 
 	public void setForeignKey(String name, String field, String fName,

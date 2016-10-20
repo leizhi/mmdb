@@ -10,7 +10,6 @@ public class DbConnectionPool {
 	private String username;
 	private String password;
 	private String dbsql;
-	private boolean dbCase;
 	private String dbHumpInterval;
 	private double connectionTimeout;
 	private int minConnections;
@@ -65,14 +64,6 @@ public class DbConnectionPool {
 
 	public void setDbsql(String dbsql) {
 		this.dbsql = dbsql;
-	}
-
-	public boolean getDbCase() {
-		return dbCase;
-	}
-
-	public void setDbCase(boolean dbCase) {
-		this.dbCase = dbCase;
 	}
 
 	public String getDbHumpInterval() {

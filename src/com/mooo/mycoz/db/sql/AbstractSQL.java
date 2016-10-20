@@ -1,5 +1,12 @@
 package com.mooo.mycoz.db.sql;
 
+import com.mooo.mycoz.common.CalendarUtils;
+import com.mooo.mycoz.common.ReflectUtil;
+import com.mooo.mycoz.common.StringUtils;
+import com.mooo.mycoz.db.DbUtil;
+import com.mooo.mycoz.db.Field;
+import com.mooo.mycoz.db.conf.DbConf;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.sql.Types;
@@ -7,13 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
-import com.mooo.mycoz.common.CalendarUtils;
-import com.mooo.mycoz.common.ReflectUtil;
-import com.mooo.mycoz.common.StringUtils;
-import com.mooo.mycoz.db.DbUtil;
-import com.mooo.mycoz.db.Field;
-import com.mooo.mycoz.db.conf.DbConf;
 
 public abstract class AbstractSQL implements ProcessSQL,Serializable{
 
@@ -311,7 +311,9 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 //			enableCase = DbConfig.getProperty("Db.case").equals("true");
 			
 			catalog = DbConf.getInstance().getDbname(entity.getClass().getPackage().getName());
-			table = StringUtils.upperToPrefix(entity.getClass().getSimpleName(),prefix);
+//			System.out.println("ClassName:"+entity.getClass().getSimpleName()+" prefix:["+ prefix+"]");
+
+			table = StringUtils.humpToSplit(entity.getClass().getSimpleName(),prefix);
 
 			List<String> methods = ReflectUtil.getMethodNames(entity.getClass());
 			
@@ -334,7 +336,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 					if(columnValue !=null) {
 						field = method.substring(method.indexOf("get")+3);
 						
-						columnName = StringUtils.upperToPrefixNot(field,prefix);
+						columnName = StringUtils.humpToSplit(field,prefix);
 						
 						columnType = DbUtil.type(catalog,table,columnName);
 						if(columnType!=-100){
