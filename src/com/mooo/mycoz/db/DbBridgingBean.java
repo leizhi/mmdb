@@ -39,13 +39,38 @@ public class DbBridgingBean {
 
 		try{
 		// 得到方法名
+		Method[] methods = bean.getClass().getDeclaredMethods();
 		String funName = StringUtils.getFunName(propertyName);
+		String getFun = "get" + funName;
+		String setFun = "set" + funName;
+
 		// get方法
-		Method getMethod = bean.getClass().getMethod("get" + funName);
+		Method getMethod = null;
+		for (Method methed : methods) {
+			//System.out.println(methed);
+			//System.out.println(methed.getName());
+			if(methed.getName().equals(getFun)){
+				getMethod = bean.getClass().getMethod(getFun);
+				break;
+			}
+		}
+
+		if(getMethod==null) return;
+
 		// 得到参数类型
 		Class<?> cl = getMethod.getReturnType();
 		// set方法
-		Method setMethod = bean.getClass().getMethod("set" + funName,new Class[] { cl });
+		Method setMethod = null;
+		for (Method methed : methods) {
+			//System.out.println(methed);
+			//System.out.println(methed.getName());
+			if(methed.getName().equals(setFun)){
+				setMethod = bean.getClass().getMethod(setFun,new Class[] { cl });
+				break;
+			}
+		}
+
+		if(setMethod==null) return;
 
 		// 当参数为空时直接赋予NULL值
 		if (value == null || value.trim().equals("")) {
