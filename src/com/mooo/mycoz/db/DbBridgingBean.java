@@ -109,15 +109,32 @@ public class DbBridgingBean {
 			Short value) throws NoSuchMethodException,
 			InvocationTargetException, IllegalAccessException, ParseException,
 			InstantiationException {
-
+		//获取所有方法
+		Method[] methods = bean.getClass().getDeclaredMethods();
 		// 得到方法名
 		String funName = StringUtils.getFunName(propertyName);
+		String getFun = "get" + funName;
+		String setFun = "set" + funName;
+
 		// get方法
-		Method getMethod = bean.getClass().getMethod("get" + funName);
+		Method getMethod = null;
+		for (Method methed : methods) {
+			//System.out.println(methed);
+			//System.out.println(methed.getName());
+			if(methed.getName().equals(getFun)){
+				getMethod = bean.getClass().getMethod(getFun);
+				break;
+			}
+		}
+
+		if(getMethod==null) return;
+
 		// 得到参数类型
 		Class<?> cl = getMethod.getReturnType();
+
+
 		// set方法
-		Method setMethod = bean.getClass().getMethod("set" + funName,
+		Method setMethod = bean.getClass().getMethod(setFun,
 				new Class[] { cl });
 
 		// 当参数为空时直接赋予NULL值
@@ -137,14 +154,30 @@ public class DbBridgingBean {
 			InvocationTargetException, IllegalAccessException, ParseException,
 			InstantiationException {
 
+		//获取所有方法
+		Method[] methods = bean.getClass().getDeclaredMethods();
 		// 得到方法名
 		String funName = StringUtils.getFunName(propertyName);
+		String getFun = "get" + funName;
+		String setFun = "set" + funName;
+
 		// get方法
-		Method getMethod = bean.getClass().getMethod("get" + funName);
+		Method getMethod = null;
+		for (Method methed : methods) {
+			//System.out.println(methed);
+			//System.out.println(methed.getName());
+			if(methed.getName().equals(getFun)){
+				getMethod = bean.getClass().getMethod(getFun);
+				break;
+			}
+		}
+
+		if(getMethod==null) return;
+
 		// 得到参数类型
 		Class<?> cl = getMethod.getReturnType();
 		// set方法
-		Method setMethod = bean.getClass().getMethod("set" + funName,
+		Method setMethod = bean.getClass().getMethod(setFun,
 				new Class[] { cl });
 
 		// 当参数为空时直接赋予NULL值
@@ -164,14 +197,30 @@ public class DbBridgingBean {
 			InvocationTargetException, IllegalAccessException, ParseException,
 			InstantiationException {
 
+		//获取所有方法
+		Method[] methods = bean.getClass().getDeclaredMethods();
 		// 得到方法名
 		String funName = StringUtils.getFunName(propertyName);
+		String getFun = "get" + funName;
+		String setFun = "set" + funName;
+
 		// get方法
-		Method getMethod = bean.getClass().getMethod("get" + funName);
+		Method getMethod = null;
+		for (Method methed : methods) {
+			//System.out.println(methed);
+			//System.out.println(methed.getName());
+			if(methed.getName().equals(getFun)){
+				getMethod = bean.getClass().getMethod(getFun);
+				break;
+			}
+		}
+
+		if(getMethod==null) return;
+
 		// 得到参数类型
 		Class<?> cl = getMethod.getReturnType();
 		// set方法
-		Method setMethod = bean.getClass().getMethod("set" + funName,
+		Method setMethod = bean.getClass().getMethod(setFun,
 				new Class[] { cl });
 
 		// 当参数为空时直接赋予NULL值
@@ -191,14 +240,30 @@ public class DbBridgingBean {
 			InvocationTargetException, IllegalAccessException, ParseException,
 			InstantiationException {
 
+		//获取所有方法
+		Method[] methods = bean.getClass().getDeclaredMethods();
 		// 得到方法名
 		String funName = StringUtils.getFunName(propertyName);
+		String getFun = "get" + funName;
+		String setFun = "set" + funName;
+
 		// get方法
-		Method getMethod = bean.getClass().getMethod("get" + funName);
+		Method getMethod = null;
+		for (Method methed : methods) {
+			//System.out.println(methed);
+			//System.out.println(methed.getName());
+			if(methed.getName().equals(getFun)){
+				getMethod = bean.getClass().getMethod(getFun);
+				break;
+			}
+		}
+
+		if(getMethod==null) return;
+
 		// 得到参数类型
 		Class<?> cl = getMethod.getReturnType();
 		// set方法
-		Method setMethod = bean.getClass().getMethod("set" + funName,
+		Method setMethod = bean.getClass().getMethod(setFun,
 				new Class[] { cl });
 
 		// 当参数为空时直接赋予NULL值
@@ -218,14 +283,30 @@ public class DbBridgingBean {
 			InvocationTargetException, IllegalAccessException, ParseException,
 			InstantiationException {
 
+		//获取所有方法
+		Method[] methods = bean.getClass().getDeclaredMethods();
 		// 得到方法名
 		String funName = StringUtils.getFunName(propertyName);
+		String getFun = "get" + funName;
+		String setFun = "set" + funName;
+
 		// get方法
-		Method getMethod = bean.getClass().getMethod("get" + funName);
+		Method getMethod = null;
+		for (Method methed : methods) {
+			//System.out.println(methed);
+			//System.out.println(methed.getName());
+			if(methed.getName().equals(getFun)){
+				getMethod = bean.getClass().getMethod(getFun);
+				break;
+			}
+		}
+
+		if(getMethod==null) return;
+
 		// 得到参数类型
 		Class<?> cl = getMethod.getReturnType();
 		// set方法
-		Method setMethod = bean.getClass().getMethod("set" + funName,
+		Method setMethod = bean.getClass().getMethod(setFun,
 				new Class[] { cl });
 
 		// 当参数为空时直接赋予NULL值
@@ -243,15 +324,30 @@ public class DbBridgingBean {
 	public static void bindProperty(Object bean, String propertyName,Date date) throws NoSuchMethodException,
 			InvocationTargetException, IllegalAccessException, ParseException,
 			InstantiationException {
-
+		//获取所有方法
+		Method[] methods = bean.getClass().getDeclaredMethods();
 		// 得到方法名
 		String funName = StringUtils.getFunName(propertyName);
+		String getFun = "get" + funName;
+		String setFun = "set" + funName;
+
 		// get方法
-		Method getMethod = bean.getClass().getMethod("get" + funName);
-		// 得到参数类型
+		Method getMethod = null;
+		for (Method methed : methods) {
+			//System.out.println(methed);
+			//System.out.println(methed.getName());
+			if(methed.getName().equals(getFun)){
+				getMethod = bean.getClass().getMethod(getFun);
+				break;
+			}
+		}
+
+		if(getMethod==null) return;
+
 		Class<?> cl = getMethod.getReturnType();
+
 		// set方法
-		Method setMethod = bean.getClass().getMethod("set" + funName,new Class[] { cl });
+		Method setMethod = bean.getClass().getMethod(setFun,new Class[] { cl });
 
 		// 当参数为空时直接赋予NULL值
 		if (date == null) {
@@ -288,8 +384,25 @@ public class DbBridgingBean {
 			throws NoSuchMethodException, InvocationTargetException,
 			IllegalAccessException, ParseException, InstantiationException {
 		
+		Method[] methods = bean.getClass().getDeclaredMethods();
+
 		String funName = StringUtils.getFunName(objName);
-		Method getMethod = bean.getClass().getMethod("get" + funName);
+		String getFun = "get" + funName;
+		String setFun = "set" + funName;
+
+		// get方法
+		Method getMethod = null;
+		for (Method methed : methods) {
+			//System.out.println(methed);
+			//System.out.println(methed.getName());
+			if(methed.getName().equals(getFun)){
+				getMethod = bean.getClass().getMethod(getFun);
+				break;
+			}
+		}
+
+		if(getMethod==null) return;
+
 		Class<?> cls = getMethod.getReturnType();
 		
 		Object obj = getMethod.invoke(bean);
@@ -297,7 +410,7 @@ public class DbBridgingBean {
 		// 判断参数为空,直接设置NULL值.
 		if (value.trim().equals("")) {
 			if (obj != null) {
-				Method setMethod = bean.getClass().getMethod("set" + funName,new Class[] { cls });
+				Method setMethod = bean.getClass().getMethod(setFun,new Class[] { cls });
 				setMethod.invoke(bean, new Object[] { null });
 			}
 			return;
@@ -316,11 +429,11 @@ public class DbBridgingBean {
 			// 设置普通系统对象的属性
 			Object dateObj = new Date( new Long(value));
 
-			Method setMethod = bean.getClass().getMethod("set" + funName,new Class[] { cls });
+			Method setMethod = bean.getClass().getMethod(setFun,new Class[] { cls });
 			// 把对象填充
 			setMethod.invoke(bean, new Object[] { dateObj });
 		} else{
-			Method setMethod = bean.getClass().getMethod("set" + funName,new Class[] { cls });
+			Method setMethod = bean.getClass().getMethod(setFun,new Class[] { cls });
 			// 把对象填充
 			setMethod.invoke(bean, new Object[] { obj });
 		}
