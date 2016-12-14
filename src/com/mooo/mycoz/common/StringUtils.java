@@ -748,6 +748,32 @@ public class StringUtils {
 		return buf.toString();
 	}
 	
+	public static final String applyFilters(String string) {
+		// Check if the string is null or zero length -- if so, return
+		// what was sent in.
+		if (string == null || string.length() == 0) {
+			return string;
+		}
+		char[] sArray = string.toCharArray();
+		StringBuffer buf = new StringBuffer(sArray.length);
+		char ch;
+		for (int i = 0; i < sArray.length; i++) {
+			ch = sArray[i];
+			if (ch == '<') {
+				buf.append("\\<");
+			} else if (ch == '&') {
+				buf.append("\\&");
+			} else if (ch == '"') {
+				buf.append("\\\"");
+			} else if (ch == '\'') {
+				buf.append("\\'");
+			} else {
+				buf.append(ch);
+			}
+		}
+		return buf.toString();
+	}
+
 	/**
 	 * checkString 
 	 * 
