@@ -761,7 +761,9 @@ public class StringUtils {
 			ch = sArray[i];
 			if (ch == '<') {
 				buf.append("\\<");
-			} else if (ch == '&') {
+			} else if (ch == '>') {
+				buf.append("\\>");
+			}else if (ch == '&') {
 				buf.append("\\&");
 			} else if (ch == '"') {
 				buf.append("\\\"");
