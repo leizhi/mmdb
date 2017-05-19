@@ -45,6 +45,7 @@
 		
 		<javac srcdir="${src.dir}" destdir="${build.dir}/classes" encoding="utf-8" includeantruntime="on">
 			<classpath refid="project.classpath" />
+			<include name="com/mooo/mycoz/**"/>
 			<exclude name="com/mooo/mycoz/test/**"/>
 		</javac>
 
