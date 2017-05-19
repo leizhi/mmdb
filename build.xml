@@ -67,7 +67,18 @@
 	<!-- 文档编译  -->
 	<target name="doc" depends="compile" description="Create Javadoc API documentation">
 		<mkdir dir="${dist.dir}/docs/api" />
-		<javadoc charset="utf-8"  encoding="utf-8" sourcepath="${src.dir}" destdir="${dist.dir}/docs/api" packagenames="com.mooo.db.*">
+
+		<javadoc charset="utf-8"  encoding="utf-8" destdir="${dist.dir}/docs/api"
+				 author="true"
+				 version="true"
+				 use="true"
+				 windowtitle="Test API">
+
+			<packageset dir="${src.dir}" defaultexcludes="yes">
+				<include name="com/mooo/mycoz/**"/>
+				<exclude name="com/mooo/mycoz/test/**"/>
+			</packageset>
+
 			<classpath refid="project.classpath" />
 		</javadoc>
 
