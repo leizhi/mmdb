@@ -1,0 +1,38 @@
+<Mydb defaultPool="pool_1">
+	<!-- choose for _,case default case-->
+	<DbConnectionPool
+		poolname="pool_1"
+		driver="org.mariadb.jdbc.Driver"
+		server="jdbc:mysql://127.0.0.1/csndtt?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true"
+		username="root"
+		password="JZworkb0x"
+		dbsql="com.mooo.mycoz.db.sql.MysqlSQL" 
+		dbHumpInterval="case"
+		connectionTimeout="0.5"
+		minConnections="5"
+		maxConnections="25"
+		connectionProvider="com.mooo.mycoz.db.pool.ConnectionDefaultPool">
+		
+		<DbPack dbpath="com.mooo.mycoz.dbobj.csndtt" dbname="csndtt"/>
+		<DbPack dbpath="com.mooo.mycoz.dbobj.wineBranch" dbname="wineBranch"/>
+		<DbPack dbpath="com.mooo.mycoz.dbobj.wineShared" dbname="wineShared"/>
+	</DbConnectionPool>
+	
+	<DbConnectionPool
+		poolname="pool_2"
+		driver="org.mariadb.jdbc.Driver"
+		server="jdbc:mysql://127.0.0.1/test?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true" 
+		username="root"
+		password=""
+		dbsql="com.mooo.mycoz.db.sql.MysqlSQL" 
+		dbHumpInterval="case"
+		connectionTimeout="0.5"
+		minConnections="5"
+		maxConnections="25"
+		connectionProvider="com.mooo.mycoz.db.pool.ConnectionDefaultPool">
+		
+		<DbPack dbpath="com.mooo.mycoz.dbobj.wineFrameWork" dbname="wineFrameWork"/>
+		<DbPack dbpath="com.mooo.mycoz.dbobj.wineBranch" dbname="wineBranch"/>
+		<DbPack dbpath="com.mooo.mycoz.dbobj.wineShared" dbname="wineShared"/>
+	</DbConnectionPool>
+</Mydb>

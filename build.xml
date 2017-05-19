@@ -45,6 +45,7 @@
 		
 		<javac srcdir="${src.dir}" destdir="${build.dir}/classes" encoding="utf-8" includeantruntime="on">
 			<classpath refid="project.classpath" />
+			<exclude name="com/mooo/mycoz/test/**"/>
 		</javac>
 
 		<copy todir="${build.dir}/classes">
@@ -52,6 +53,7 @@
 				<include name="**/*.xml" />
 				<include name="**/*.dtd" />
 				<include name="**/*.properties" />
+				<exclude name="com/mooo/mycoz/test/**"/>
 			</fileset>
 		</copy>
 	</target>
@@ -65,7 +67,7 @@
 	<target name="doc" depends="compile" description="Create Javadoc API documentation">
 		<mkdir dir="${dist.dir}/docs/api" />
 		<javadoc charset="utf-8"  encoding="utf-8" sourcepath="${src.dir}" destdir="${dist.dir}/docs/api" packagenames="com.mooo.db.*">
-			<classpath refid="compile.classpath" />
+			<classpath refid="project.classpath" />
 		</javadoc>
 
 		<echo>javadoc is complete!</echo>
