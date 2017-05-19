@@ -1,12 +1,16 @@
 package com.mooo.mycoz.test;
 
 import com.mooo.mycoz.db.MultiDBObject;
+import com.mooo.mycoz.db.conf.DbConf;
+import com.mooo.mycoz.db.conf.DbConnectionPool;
+import com.mooo.mycoz.db.conf.Mydb;
 import com.mooo.mycoz.db.pool.DbConnectionManager;
 import com.mooo.mycoz.test.dbobj.wineBranch.User;
 
 import java.sql.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 public class BeanTools {
 	
@@ -60,7 +64,19 @@ public class BeanTools {
 			}
 		}
 	}
-	
+
+	public static void DbConfTest() {
+//        System.out.println("Hello World!");
+
+		Mydb mydb = DbConf.getInstance().getMydb();
+
+		Vector<DbConnectionPool> pools = mydb.getPools();
+
+		for(DbConnectionPool pool:pools){
+			System.out.println("pool->>>"+pool);
+			System.out.println("pool->>>"+pool.getPoolname());
+		}
+	}
 	/**
 	 * @param args
 	 */

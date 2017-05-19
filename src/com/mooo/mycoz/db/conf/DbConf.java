@@ -12,7 +12,7 @@ public class DbConf {
 	private static Object initLock = new Object();
 	private static DbConf conf = null;
 
-	private static String confFile = "com/mooo/mycoz/test/mydb.xml";
+	private static String confFile = "mydb.xml";
 	private static Mydb mydb;
 
 	/*
@@ -122,16 +122,5 @@ public class DbConf {
 		return getDbHumpInterval(mydb.getDefaultPool());
 	}
 
-	public static void main(String args[]) {
-//        System.out.println("Hello World!");
-		
-		Mydb mydb = getInstance().getMydb();
-		
-		Vector<DbConnectionPool> pools = mydb.getPools();
-		
-		for(DbConnectionPool pool:pools){
-			System.out.println("pool->>>"+pool);
-			System.out.println("pool->>>"+pool.getPoolname());
-		}
-    } 
+
 }
