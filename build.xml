@@ -78,10 +78,12 @@
 		<echo message="${ant.project.name}: ${ant.file}"/>
 		
 		<jar basedir="${build.dir}/classes" destfile="${dist.dir}/${jar-file-name}">
+			<!--
 			<manifest>
 				<attribute name="Main-Class" value="${main-class}"/>
 				<attribute name="Class-Path" value=""/>
 			</manifest>
+			-->
 		</jar>
 	</target>
 </project>
