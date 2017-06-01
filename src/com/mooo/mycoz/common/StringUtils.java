@@ -418,6 +418,30 @@ public class StringUtils {
 			return false;
 		}
 	}
+
+	//双字节转单字节
+	public static byte[] shortToByte(short[] chars) {
+		byte[] bytes = new byte[chars.length*2];
+		for (int i=0;i<chars.length;i++)
+		{
+			bytes[2*i] = (byte) ((chars[i] & 0xFF00) >> 8);;
+			bytes[2*i+1] = (byte) (chars[i] & 0xFF);;
+		}
+		return bytes;
+	}
+
+	//单字节转双字节
+	public static short[] byteToShort(byte[] bytes) {
+		if(bytes.length%2 !=0 ) return null;
+
+		short chars[] = new short[bytes.length/2];
+		for (int i=0;i<chars.length;i++)
+		{
+			chars[i] = (short) (((bytes[2*i] & 0xFF) << 8) | (bytes[2*i+1] & 0xFF));
+		}
+		return chars;
+	}
+
 	/**
 	 * Converts a line of text into an array of lower case words. Words are
 	 * delimited by the following characters: , .\r\n:/\+
