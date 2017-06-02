@@ -420,7 +420,7 @@ public class StringUtils {
 	}
 
 	//双字节转单字节
-	public static byte[] shortToByte(short[] chars) {
+	public static byte[] charToByte(char[] chars) {
 		byte[] bytes = new byte[chars.length*2];
 		for (int i=0;i<chars.length;i++)
 		{
@@ -431,13 +431,13 @@ public class StringUtils {
 	}
 
 	//单字节转双字节
-	public static short[] byteToShort(byte[] bytes) {
+	public static char[] byteToChar(byte[] bytes) {
 		if(bytes.length%2 !=0 ) return null;
 
-		short chars[] = new short[bytes.length/2];
+		char chars[] = new char[bytes.length/2];
 		for (int i=0;i<chars.length;i++)
 		{
-			chars[i] = (short) (((bytes[2*i] & 0xFF) << 8) | (bytes[2*i+1] & 0xFF));
+			chars[i] = (char) (((bytes[2*i] & 0xFF) << 8) | (bytes[2*i+1] & 0xFF));
 		}
 		return chars;
 	}
