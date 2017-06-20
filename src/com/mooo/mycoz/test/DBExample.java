@@ -1,5 +1,6 @@
 package com.mooo.mycoz.test;
 
+import com.mooo.mycoz.db.DbBridgingBean;
 import com.mooo.mycoz.db.MultiDBObject;
 import com.mooo.mycoz.db.conf.DbConf;
 import com.mooo.mycoz.db.conf.DbConnectionPool;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-public class BeanTools {
+public class DBExample {
 	
 	public void buildInsert(String table){
 		Connection con = null;
@@ -77,17 +78,13 @@ public class BeanTools {
 			System.out.println("pool->>>"+pool.getPoolname());
 		}
 	}
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-//		BeanTools beanTools = new BeanTools();
-//		beanTools.buildInsert("wifi_task");
 
-//		DbBridgingBean bd = new DbBridgingBean();
-//		bd.dbToBean("wineBranch","User");
-//		bd.dbToBean("csndtt","risk_theme");
+	public static void dbToBean() {
+		DbBridgingBean bd = new DbBridgingBean();
+		bd.dbToBean("smdpack","task_info");
+	}
 
+	public static void multiDB() {
 		try {
 			MultiDBObject multiDBObject = new MultiDBObject();
 //			multiDBObject.addTable(RiskTheme.class, "riskTheme");
@@ -134,11 +131,13 @@ public class BeanTools {
 		}catch (Exception e){
 			e.printStackTrace();
 		}
-//		String str = "AaaBbbCccDdd";
-//		String a1 = StringUtils.humpToSplit(str,"_");
-//		System.out.println(a1);
-//		str = "risk_questionnaire_id";
-//		System.out.println("toH:"+splitToHump(str,'_',false));
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		dbToBean();
 	}
 
 //	public static String humpToPre(String word){

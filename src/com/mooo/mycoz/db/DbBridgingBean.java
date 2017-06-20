@@ -1,21 +1,15 @@
 package com.mooo.mycoz.db;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
-import java.text.ParseException;
-import java.util.Date;
-
 import com.mooo.mycoz.common.CalendarUtils;
 import com.mooo.mycoz.common.StringUtils;
 import com.mooo.mycoz.db.conf.DbConf;
 import com.mooo.mycoz.db.pool.DbConnectionManager;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.sql.*;
+import java.text.ParseException;
+import java.util.Date;
 
 public class DbBridgingBean {
 
@@ -541,7 +535,7 @@ public class DbBridgingBean {
 
 			System.out.println("columnName:"+columnName+" Precision: "+ precision+" Scale: "+scale+" columnType: "+ type);
 
-			if(type == Types.CHAR || type == Types.VARCHAR || type == Types.LONGVARCHAR || type ==Types.NVARCHAR || type==Types.OTHER){
+			if(type == Types.CHAR || type == Types.VARCHAR || type == Types.LONGVARCHAR || type ==Types.VARCHAR || type==Types.OTHER){
 				buffer.append("\tprivate String "+ columnName + ";\n");
 				gsMethod.append(StringUtils.createMethod(columnName, "String"));
 			}else if (type==Types.NUMERIC){
@@ -555,9 +549,12 @@ public class DbBridgingBean {
 			}else if (type == Types.SMALLINT){
 				buffer.append("\tprivate Short "+ columnName + ";\n");
 				gsMethod.append(StringUtils.createMethod(columnName, "Short"));
-			}else if (type == Types.INTEGER || type == Types.BIGINT){
+			}else if (type == Types.INTEGER){
 				buffer.append("\tprivate Integer "+ columnName + ";\n");
 				gsMethod.append(StringUtils.createMethod(columnName, "Integer"));
+			}else if (type == Types.BIGINT){
+				buffer.append("\tprivate Long "+ columnName + ";\n");
+				gsMethod.append(StringUtils.createMethod(columnName, "Long"));
 			}else if (type==Types.DECIMAL){
 				buffer.append("\tprivate Double "+ columnName + ";\n");
 				gsMethod.append(StringUtils.createMethod(columnName, "Double"));

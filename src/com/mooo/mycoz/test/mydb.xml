@@ -3,11 +3,11 @@
 	<DbConnectionPool
 		poolname="pool_1"
 		driver="org.mariadb.jdbc.Driver"
-		server="jdbc:mysql://127.0.0.1/csndtt?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true"
+		server="jdbc:mysql://127.0.0.1/smdpack?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true"
 		username="root"
 		password="JZworkb0x"
 		dbsql="com.mooo.mycoz.db.sql.MysqlSQL" 
-		dbHumpInterval="case"
+		dbHumpInterval="_"
 		connectionTimeout="0.5"
 		minConnections="5"
 		maxConnections="25"
