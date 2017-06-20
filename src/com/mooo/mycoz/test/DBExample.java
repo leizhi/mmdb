@@ -6,11 +6,8 @@ import com.mooo.mycoz.db.conf.DbConf;
 import com.mooo.mycoz.db.conf.DbConnectionPool;
 import com.mooo.mycoz.db.conf.Mydb;
 import com.mooo.mycoz.db.pool.DbConnectionManager;
-import com.mooo.mycoz.test.dbobj.wineBranch.User;
 
 import java.sql.*;
-import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 public class DBExample {
@@ -98,7 +95,7 @@ public class DBExample {
 //				RiskTheme riskTheme = (RiskTheme)map.get("riskTheme");
 //				System.out.println(riskTheme.getThemeId());
 //			}
-
+/*
 			multiDBObject = new MultiDBObject();
 			multiDBObject.addTable(User.class, "riskTheme");
 			multiDBObject.addTable(User.class, "riskTheme1");
@@ -112,7 +109,7 @@ public class DBExample {
 				User riskTheme = (User) map.get("riskTheme");
 				System.out.println(riskTheme.getName());
 			}
-
+*/
 //			RiskTheme riskTheme = new RiskTheme();
 //			riskTheme.count();
 //			List rs = riskTheme.searchAndRetrieveList();
