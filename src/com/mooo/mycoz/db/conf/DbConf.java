@@ -4,6 +4,9 @@ import org.apache.commons.digester.Digester;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Vector;
 
 public class DbConf {
@@ -59,7 +62,14 @@ public class DbConf {
 			
 			digester.addSetNext("Mydb/DbConnectionPool", "addPool");
 
-			mydb = (Mydb) digester.parse(this.getClass().getClassLoader().getResourceAsStream(confFile));
+			File conff = new File(confFile);
+			InputStream confStream = null;
+			if(conff.exists())
+				confStream = new FileInputStream(conff);
+			else
+				confStream = this.getClass().getClassLoader().getResourceAsStream(confFile);
+
+			mydb = (Mydb) digester.parse(confStream);
 			
 			if(log.isDebugEnabled())log.debug("DbConf");
 		} catch (Exception e) {

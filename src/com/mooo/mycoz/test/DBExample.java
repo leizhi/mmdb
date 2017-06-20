@@ -81,6 +81,10 @@ public class DBExample {
 		bd.dbToBean("smdpack","task_info");
 	}
 
+	public static void confInit() {
+		dbToBean();
+	}
+
 	public static void multiDB() {
 		try {
 			MultiDBObject multiDBObject = new MultiDBObject();
