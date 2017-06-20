@@ -12,7 +12,7 @@ public class DbConf {
 	private static Object initLock = new Object();
 	private static DbConf conf = null;
 
-	private static String confFile = "com/mooo/mycoz/test/mydb.xml";
+	private static String confFile = "mydb.xml";
 	private static Mydb mydb;
 
 	/*
