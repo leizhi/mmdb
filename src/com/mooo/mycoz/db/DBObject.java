@@ -267,6 +267,10 @@ public class DBObject<T> implements DbProcess{
 						DbBridgingBean.bindProperty(bean,
 								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,false),
 								result.getDate(i));
+					}else if(type == Types.FLOAT){
+						DbBridgingBean.bindProperty(this,
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
+								result.getFloat(i));
 					}else if(type == Types.SMALLINT){
 						DbBridgingBean.bindProperty(bean,
 								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,false),
@@ -278,7 +282,7 @@ public class DBObject<T> implements DbProcess{
 					}else if(type == Types.BIGINT){
 						DbBridgingBean.bindProperty(bean,
 								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,false),
-								result.getInt(i));
+								result.getLong(i));
 					}else{
 						DbBridgingBean.bindProperty(bean,
 								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,false),
@@ -355,7 +359,15 @@ public class DBObject<T> implements DbProcess{
 						DbBridgingBean.bindProperty(this,
 								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
 								result.getTimestamp(i));
-					}else if(type == Types.INTEGER || type == Types.SMALLINT){
+					}else if(type == Types.FLOAT){
+						DbBridgingBean.bindProperty(this,
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
+								result.getFloat(i));
+					}else if(type == Types.SMALLINT){
+						DbBridgingBean.bindProperty(this,
+								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
+								result.getShort(i));
+					}else if(type == Types.INTEGER){
 						DbBridgingBean.bindProperty(this,
 								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
 								result.getInt(i));
@@ -367,10 +379,6 @@ public class DBObject<T> implements DbProcess{
 						DbBridgingBean.bindProperty(this,
 								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
 								result.getDouble(i));
-					}else if(type == Types.FLOAT){
-						DbBridgingBean.bindProperty(this,
-								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
-								result.getFloat(i));
 					}else {
 						DbBridgingBean.bindProperty(this,
 								StringUtils.splitToHump(rsmd.getColumnName(i),prefix,true),
