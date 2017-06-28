@@ -43,7 +43,7 @@
 	<!-- 编译Java代码 -->
 	<target name="compile" depends="init" description="compile java source">
 		
-		<javac srcdir="${src.dir}" destdir="${build.dir}/classes" encoding="utf-8" includeantruntime="on">
+		<javac srcdir="${src.dir}" destdir="${build.dir}/classes" encoding="utf-8" includeantruntime="on" debug="on">
 			<classpath refid="project.classpath" />
 			<include name="com/mooo/mycoz/**"/>
 			<exclude name="com/mooo/mycoz/test/**"/>

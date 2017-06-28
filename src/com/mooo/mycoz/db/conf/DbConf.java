@@ -69,8 +69,11 @@ public class DbConf {
 			else
 				confStream = this.getClass().getClassLoader().getResourceAsStream(confFile);
 
-			mydb = (Mydb) digester.parse(confStream);
-			
+			if(confStream!=null)
+				mydb = (Mydb) digester.parse(confStream);
+			else
+				mydb = new Mydb();
+
 			if(log.isDebugEnabled())log.debug("DbConf");
 		} catch (Exception e) {
 			e.printStackTrace();

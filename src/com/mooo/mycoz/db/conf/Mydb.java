@@ -7,6 +7,11 @@ public class Mydb {
 	private String defaultPool;
 	private Vector<DbConnectionPool> pools;
 
+	public  Mydb(){
+		defaultPool = "";
+		pools = new Vector<DbConnectionPool>();
+	}
+
 	public String getDefaultPool() {
 		return defaultPool;
 	}
