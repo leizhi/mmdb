@@ -36,7 +36,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 
 	private static final String SEARCH="SELECT * FROM ";
 
-	public static final String SWHERE=" WHERE ";
+	public static final String WHERE_S=" WHERE ";
 
 	private static final String GROUP_BY=" GROUP BY ";
 	
@@ -368,7 +368,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 					
 					if(isHead) {
 						isHead = false;
-						buffer.append(SWHERE);
+						buffer.append(WHERE_S);
 					}else{
 						buffer.append(field.getWhereBy());
 					}
@@ -395,7 +395,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 					
 					if(isHead) {
 						isHead = false;
-						buffer.append(SWHERE);
+						buffer.append(WHERE_S);
 					}else{
 						buffer.append(field.getWhereBy());
 					}
@@ -408,7 +408,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 					if(!value.equals("")){
 						if(isHead) {
 							isHead = false;
-							buffer.append(SWHERE);
+							buffer.append(WHERE_S);
 						}else{
 							buffer.append(field.getWhereBy());
 						}
@@ -560,17 +560,13 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 			}
 		}
 		
-		boolean can_del = false;
-
 		isHead = true;
 		for(Field field:entityField){
 			
 			if(field.isPrimaryKey() ){
-				can_del = true;
-
 				if(isHead) {
 					isHead = false;
-					sql += SWHERE;
+					sql += WHERE_S;
 				}else{
 					sql += field.getWhereBy();
 				}
@@ -588,10 +584,6 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 				}
 				
 			}
-		}
-
-		if(!can_del){
-			sql += " WHERE id=0";
 		}
 
 		return sql;
@@ -612,7 +604,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 			
 			if(isHead) {
 				isHead = false;
-				sql += SWHERE;
+				sql += WHERE_S;
 			}else{
 				sql += field.getWhereBy();
 			}
@@ -652,7 +644,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 			
 			if(isHead) {
 				isHead = false;
-				sql += SWHERE;
+				sql += WHERE_S;
 			}else{
 				sql += field.getWhereBy();
 			}

@@ -90,7 +90,7 @@ public class DBObject<T> implements DbProcess{
 	public synchronized void update(Connection connection) throws SQLException {
 		String updateSQL = processSQL.updateSQL(this);
 		if (log.isDebugEnabled()) log.debug("updateSQL:" + updateSQL);
-		if(updateSQL.indexOf(AbstractSQL.SWHERE) < 0) return;
+		if(updateSQL.indexOf(AbstractSQL.WHERE_S) < 0) return;
 
 		execute(connection,updateSQL);
 	}
@@ -106,7 +106,7 @@ public class DBObject<T> implements DbProcess{
 	public synchronized void delete(Connection connection) throws SQLException {
 		String deleteSQL = processSQL.deleteSQL(this);
 		if (log.isDebugEnabled()) log.debug("deleteSQL:" + deleteSQL);
-		if(deleteSQL.indexOf(AbstractSQL.SWHERE) < 0) return;
+		if(deleteSQL.indexOf(AbstractSQL.WHERE_S) < 0) return;
 
 		execute(connection,deleteSQL);
 	}
