@@ -3,6 +3,7 @@ package com.mooo.mycoz.db;
 import com.mooo.mycoz.common.StringUtils;
 import com.mooo.mycoz.db.conf.DbConf;
 import com.mooo.mycoz.db.pool.DbConnectionManager;
+import com.mooo.mycoz.db.sql.AbstractSQL;
 import com.mooo.mycoz.db.sql.ProcessSQL;
 import com.mooo.mycoz.db.sql.SQLFactory;
 import org.apache.commons.logging.Log;
@@ -33,20 +34,15 @@ public class DBObject<T> implements DbProcess{
 		}
 
 	}
-	
-	/**
-	 * add
-	 */ 
-	public synchronized void add(Connection connection) throws SQLException {
-		Connection myConn = null;
-		boolean isClose = true;
-		
-		Statement stmt = null;
-		
-		String executeSQL = processSQL.addSQL(this);
-		
+
+	private void execute(Connection connection,String executeSQL) throws SQLException {
+
 		if (log.isDebugEnabled()) log.debug("executeSQL:" + executeSQL);
 
+		Connection myConn = null;
+		boolean isClose = true;
+
+		Statement stmt = null;
 		try{
 			if(connection != null){
 				myConn = connection;
@@ -55,17 +51,17 @@ public class DBObject<T> implements DbProcess{
 				myConn = DbConnectionManager.getConnection();
 				isClose = true;
 			}
-			
+
 			stmt = myConn.createStatement();
 			stmt.execute(executeSQL);
 		}finally {
-	
+
 			try {
-					stmt.close();
+				stmt.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			
+
 			try {
 				if(isClose)
 					myConn.close();
@@ -74,48 +70,29 @@ public class DBObject<T> implements DbProcess{
 			}
 		}
 	}
+
+	/**
+	 * add
+	 */ 
+	public synchronized void add(Connection connection) throws SQLException {
+		String addSQL = processSQL.updateSQL(this);
+		if (log.isDebugEnabled()) log.debug("addSQL:" + addSQL);
+		execute(connection,addSQL);
+	}
 	
 	public void add() throws SQLException {
 		add(null);
 	}
-	
+
 	/**
 	 * update
 	 */ 
 	public synchronized void update(Connection connection) throws SQLException {
-		
-		Connection myConn = null;
-		boolean isClose = true;
-		
-		Statement stmt = null;
-		String executeSQL = processSQL.updateSQL(this);
-		if (log.isDebugEnabled()) log.debug("executeSQL:" + executeSQL);
-		try{
-			if(connection != null){
-				myConn = connection;
-				isClose = false;
-			} else {
-				myConn = DbConnectionManager.getConnection();
-				isClose = true;
-			}
-			
-			stmt = myConn.createStatement();
-			stmt.execute(executeSQL);
-		}finally {
-	
-			try {
-					stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				if(isClose)
-					myConn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}		
+		String updateSQL = processSQL.updateSQL(this);
+		if (log.isDebugEnabled()) log.debug("updateSQL:" + updateSQL);
+		if(updateSQL.indexOf(AbstractSQL.SWHERE) < 0) return;
+
+		execute(connection,updateSQL);
 	}
 	
 	public void update() throws SQLException {
@@ -127,40 +104,11 @@ public class DBObject<T> implements DbProcess{
 	 */ 
 	
 	public synchronized void delete(Connection connection) throws SQLException {
-		
-		Connection myConn = null;
-		boolean isClose = true;
-		
-		Statement stmt = null;
-		String executeSQL = processSQL.deleteSQL(this);
-		if (log.isDebugEnabled()) log.debug("executeSQL:" + executeSQL);
-		try{
-			if(connection != null){
-				myConn = connection;
-				isClose = false;
-			} else {
-				myConn = DbConnectionManager.getConnection();
-				isClose = true;
-			}
-			
-			stmt = myConn.createStatement();
-			stmt.execute(executeSQL);
-		}finally {
-	
-			try {
-					stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				if(isClose)
-					myConn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
+		String deleteSQL = processSQL.deleteSQL(this);
+		if (log.isDebugEnabled()) log.debug("deleteSQL:" + deleteSQL);
+		if(deleteSQL.indexOf(AbstractSQL.SWHERE) < 0) return;
+
+		execute(connection,deleteSQL);
 	}
 	
 	public void delete() throws SQLException {

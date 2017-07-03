@@ -35,7 +35,9 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 	private static final String DELETE="DELETE FROM ";
 
 	private static final String SEARCH="SELECT * FROM ";
-	
+
+	public static final String SWHERE=" WHERE ";
+
 	private static final String GROUP_BY=" GROUP BY ";
 	
 	private static final String ORDER_BY=" ORDER BY ";
@@ -366,7 +368,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 					
 					if(isHead) {
 						isHead = false;
-						buffer.append(" WHERE ");
+						buffer.append(SWHERE);
 					}else{
 						buffer.append(field.getWhereBy());
 					}
@@ -393,7 +395,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 					
 					if(isHead) {
 						isHead = false;
-						buffer.append(" WHERE ");
+						buffer.append(SWHERE);
 					}else{
 						buffer.append(field.getWhereBy());
 					}
@@ -406,7 +408,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 					if(!value.equals("")){
 						if(isHead) {
 							isHead = false;
-							buffer.append(" WHERE ");
+							buffer.append(SWHERE);
 						}else{
 							buffer.append(field.getWhereBy());
 						}
@@ -558,13 +560,17 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 			}
 		}
 		
+		boolean can_del = false;
+
 		isHead = true;
 		for(Field field:entityField){
 			
 			if(field.isPrimaryKey() ){
+				can_del = true;
+
 				if(isHead) {
 					isHead = false;
-					sql += " WHERE ";
+					sql += SWHERE;
 				}else{
 					sql += field.getWhereBy();
 				}
@@ -583,7 +589,11 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 				
 			}
 		}
-		
+
+		if(!can_del){
+			sql += " WHERE id=0";
+		}
+
 		return sql;
 	}
 	
@@ -602,7 +612,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 			
 			if(isHead) {
 				isHead = false;
-				sql += " WHERE ";
+				sql += SWHERE;
 			}else{
 				sql += field.getWhereBy();
 			}
@@ -642,7 +652,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 			
 			if(isHead) {
 				isHead = false;
-				sql += " WHERE ";
+				sql += SWHERE;
 			}else{
 				sql += field.getWhereBy();
 			}
