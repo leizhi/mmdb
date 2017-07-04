@@ -75,7 +75,7 @@ public class DBObject<T> implements DbProcess{
 	 * add
 	 */ 
 	public synchronized void add(Connection connection) throws SQLException {
-		String addSQL = processSQL.updateSQL(this);
+		String addSQL = processSQL.addSQL(this);
 		if (log.isDebugEnabled()) log.debug("addSQL:" + addSQL);
 		execute(connection,addSQL);
 	}
