@@ -291,6 +291,8 @@ public class StringUtils {
 	 * @return generated hex string
 	 */
 	public static final String toHex(byte hash[]) {
+		if(hash==null) return null;
+
 		StringBuffer buf = new StringBuffer(hash.length * 2);
 		int i;
 
