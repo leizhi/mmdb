@@ -473,8 +473,8 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 
 						do {
 							synchronized (connStatus) {
-								log.debug("connStatus[" + roundRobin + "]:"
-										+ connStatus[roundRobin]);
+//								log.debug("connStatus[" + roundRobin + "]:"
+//										+ connStatus[roundRobin]);
 
 								if ((connStatus[roundRobin] < 1)
 										&& (!connPool[roundRobin].isClosed())) {
@@ -563,8 +563,8 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 			if (thisconn >= 0) {
 				connStatus[thisconn] = 0;
 				res = "freed " + conn.toString();
-				log.debug("Freed connection " + String.valueOf(thisconn)
-						+ " normal exit: ");
+//				log.debug("Freed connection " + String.valueOf(thisconn)
+//						+ " normal exit: ");
 			} else {
 				log.debug("----> Could not free connection!!!");
 			}
@@ -723,7 +723,7 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 		 */
 		public void close() throws SQLException {
 			connectionPool.freeConnection(this.connection);
-			log.debug("ConnectionWrapper close");
+//			log.debug("ConnectionWrapper close");
 
 			// Release object references. Any further method calls on the
 			// connection will fail.
