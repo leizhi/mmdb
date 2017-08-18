@@ -240,7 +240,7 @@ public class MysqlMultiSQL implements ProcessMultiSQL {
 			searchSQL = searchSQL.substring(0,vdex);
 		}
 		
-		return searchSQL;
+		return "SELECT COUNT(*) FROM ("+searchSQL+") rs";
 	}
 
 	public void setRecord(int offsetRecord, int maxRecords) {

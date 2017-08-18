@@ -139,8 +139,8 @@ public class DBObject<T> implements DbProcess{
 			stmt = myConn.createStatement();
 			ResultSet result = stmt.executeQuery(executeSQL);
 			
-			while (result.next()) {
-				total ++;
+			if (result.next()) {
+				total = result.getInt(1);
 			}
 			
 		} catch (Exception e) {

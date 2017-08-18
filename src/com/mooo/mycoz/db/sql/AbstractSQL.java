@@ -684,8 +684,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 		if(vdex>0){
 			querySQL = querySQL.substring(0,vdex);
 		}
-		
-		return querySQL;
+		return "SELECT COUNT(*) FROM ("+querySQL+") rs";
 	}
 	
 	abstract public String offsetRecordSQL();

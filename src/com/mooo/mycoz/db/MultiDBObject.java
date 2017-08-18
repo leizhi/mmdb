@@ -153,8 +153,8 @@ public class MultiDBObject extends MysqlMultiSQL implements MultiDbProcess {
 			stmt = myConn.createStatement();
 			ResultSet result = stmt.executeQuery(doSql);
 			
-			while (result.next()) {
-				total ++;
+			if (result.next()) {
+				total = result.getInt(1);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
