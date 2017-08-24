@@ -290,20 +290,27 @@ public class StringUtils {
 	 *            an rray of bytes to convert to a hex-string
 	 * @return generated hex string
 	 */
-	public static final String toHex(byte hash[]) {
+	public static final String toHex(byte hash[],int offset,int len) {
 		if(hash==null) return null;
 
-		StringBuffer buf = new StringBuffer(hash.length * 2);
+		if(hash.length < offset+len) return null;
+
+		StringBuffer buf = new StringBuffer(len * 2);
 		int i;
 
-		for (i = 0; i < hash.length; i++) {
-			if (((int) hash[i] & 0xff) < 0x10) {
+		for (i = 0; i < len; i++) {
+			if (((int) hash[offset+i] & 0xff) < 0x10) {
 				buf.append("0");
 			}
-			buf.append(Long.toString((int) hash[i] & 0xff, 16));
+			buf.append(Long.toString((int) hash[offset+i] & 0xff, 16));
 		}
 		return buf.toString();
 	}
+
+	public static final String toHex(byte hash[]) {
+		return toHex(hash,0,hash.length);
+	}
+
 	/**
 	 * Convert char to byte
 	 * 
