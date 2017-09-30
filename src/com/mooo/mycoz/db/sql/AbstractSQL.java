@@ -108,7 +108,8 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 			if(fieldValue.getClass().isAssignableFrom(String.class)){
 				String value = fieldValue.toString();
 				
-				if(!StringUtils.isNull(value)){
+//				if(!StringUtils.isNull(value)){
+				if(value!=null){
 					entityField.add(new Field(fieldName,fieldValue,fieldType,whereBy,whereRule,isPrimaryKey));
 				}
 			}else{

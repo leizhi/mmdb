@@ -308,6 +308,8 @@ public class StringUtils {
 	}
 
 	public static final String toHex(byte hash[]) {
+		if(hash==null) return null;
+
 		return toHex(hash,0,hash.length);
 	}
 
