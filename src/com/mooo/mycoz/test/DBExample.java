@@ -1,5 +1,6 @@
 package com.mooo.mycoz.test;
 
+import com.mooo.mycoz.common.StringUtils;
 import com.mooo.mycoz.db.DbBridgingBean;
 import com.mooo.mycoz.db.MultiDBObject;
 import com.mooo.mycoz.db.conf.DbConf;
@@ -138,8 +139,13 @@ public class DBExample {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		dbToBean();
+//		dbToBean();
+		String mac = "40:61:86:72:b8:1f";
+		byte smac[] = StringUtils.toBytes(mac);
+		System.out.println("MAC:\t" + StringUtils.toHex(smac));
+
 	}
+
 
 //	public static String humpToPre(String word){
 //		String a1 = "";

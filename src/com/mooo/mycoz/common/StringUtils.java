@@ -368,16 +368,35 @@ public class StringUtils {
 	}
 	/**
 	 * Convert byte[4] to short
+	 *
+	 * @param bytes
+	 *        byte[4]
+	 * @return long
+	 */
+	public static long toLong(byte[] bytes) {
+		int mask = 0xff;
+		int temp = 0;
+		long n = 0;
+		for (int i = 0; i < bytes.length; i++) {
+			n <<= 8;
+			temp = bytes[i] & mask;
+			n |= temp;
+		}
+		return n;
+	}
+
+	/**
+	 * Convert byte[4] to short
 	 * 
 	 * @param bytes
 	 *        byte[4]
 	 * @return long
 	 */
-	public static long toInt(byte[] bytes) {
+	public static int toInt(byte[] bytes) {
 		int mask = 0xff;
 		int temp = 0;
-		long n = 0;
-		for (int i = 0; i < 4 ; i++) {
+		int n = 0;
+		for (int i = 0; i < bytes.length; i++) {
 			n <<= 8;
 			temp = bytes[i] & mask;
 			n |= temp;
@@ -395,7 +414,7 @@ public class StringUtils {
 		int mask = 0xff;
 		int temp = 0;
 		short n = 0;
-		for (int i = 0; i < 2 ; i++) {
+		for (int i = 0; i < bytes.length; i++) {
 			n <<= 4;
 			temp = bytes[i] & mask;
 			n |= temp;
