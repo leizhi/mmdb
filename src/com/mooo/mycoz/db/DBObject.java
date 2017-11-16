@@ -369,6 +369,10 @@ public class DBObject<T> implements DbProcess{
 		processSQL.setLike(fieldName, fieldValue);
 	}
 
+	public void setLike2(String fieldName, Object fieldValue) {
+		processSQL.setLike2(fieldName, fieldValue);
+	}
+
 	public void setGreater(String fieldName, Object fieldValue) {
 		processSQL.setGreater(fieldName, fieldValue);
 	}

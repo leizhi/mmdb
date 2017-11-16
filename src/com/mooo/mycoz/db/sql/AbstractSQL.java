@@ -149,6 +149,34 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 			}
 		}
 	}
+
+	public void setLike2(String fieldName,Object fieldValue){
+		if(fieldName!=null && fieldValue!=null){
+			boolean haveField = false;
+
+			for(Field field:entityField){
+				if(fieldName.equals(field.getFieldName())
+						&& field.getWhereRule().equals(Field.RULE_LIKE)){
+
+					if(fieldValue.getClass().isAssignableFrom(String.class)){
+						String value = fieldValue.toString();
+
+						if(!StringUtils.isNull(value)){
+							field.setFieldValue(fieldValue);
+
+							haveField=true;
+							break;
+						}
+					}
+				}
+			}
+
+			if(!haveField){
+				extendField.add(new Field(fieldName,fieldValue,1000,Field.WHERE_BY_AND,Field.RULE_LIKE,false));
+			}
+		}
+	}
+
 	public void setGreater(String fieldName,Object fieldValue){
 		if(fieldName!=null && fieldValue!=null){
 			boolean haveField = false;

@@ -5,7 +5,9 @@ public interface SetupSQL {
 	public void setField(String fieldName,Object fieldValue,int fieldType,boolean isPrimaryKey);
 	
 	public void setLike(String fieldName,Object fieldValue);
-	
+
+	public void setLike2(String fieldName,Object fieldValue);
+
 	public void setGreater(String fieldName,Object fieldValue);
 
 	public void setGreaterEqual(String fieldName,Object fieldValue);
