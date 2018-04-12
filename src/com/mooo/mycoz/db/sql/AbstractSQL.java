@@ -504,12 +504,12 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 
 	private String appendFValue(Field field){
 
-		if(field==null) return "";
+		if(field==null) return "''";
 
 		String appends;
 		Object fieldValue = field.getFieldValue();
 
-		if(fieldValue==null || fieldValue.equals("")) return "";
+		if(fieldValue==null || fieldValue.equals("")) return "''";
 
 		if(field.getFieldType()==Types.TIMESTAMP){
 			appends= "'"+CalendarUtils.dtformat(((Date)fieldValue))+"'";
@@ -677,8 +677,6 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 			}
 			
 			sql += field.getFieldName()+"=";
-			Object fieldValue = field.getFieldValue();
-
 			sql += appendFValue(field);
 		}
 		
