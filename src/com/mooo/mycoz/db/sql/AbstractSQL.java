@@ -502,16 +502,24 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 		return buffer.toString();
 	}
 
-	private void sqlValuesAppend(String sql,Field field){
+	private String appendFValue(Field field){
+
+		if(field==null) return "";
+
+		String appends;
 		Object fieldValue = field.getFieldValue();
 
+		if(fieldValue==null || fieldValue.equals("")) return "";
+
 		if(field.getFieldType()==Types.TIMESTAMP){
-			sql += "'"+CalendarUtils.dtformat(((Date)fieldValue))+"'";
+			appends= "'"+CalendarUtils.dtformat(((Date)fieldValue))+"'";
 		}else if(field.getFieldType()==Types.DATE){
-			sql += "'"+CalendarUtils.dformat(((Date)fieldValue))+"'";
+			appends= "'"+CalendarUtils.dformat(((Date)fieldValue))+"'";
 		} else {
-			sql += StringUtils.fieldValue(fieldValue);
+			appends= StringUtils.fieldValue(fieldValue);
 		}
+		return appends;
+//		System.out.println(sql);
 	}
 
 	public String addSQL(Object entity){
@@ -547,7 +555,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 			else
 				sql += ",";
 
-			sqlValuesAppend(sql,field);
+			sql += appendFValue(field);
 		}
 		
 		sql += ")"; 
@@ -582,7 +590,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 				
 				sql += field.getFieldName()+"=";
 
-				sqlValuesAppend(sql,field);
+				sql += appendFValue(field);
 			}
 		}
 		
@@ -639,7 +647,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 			
 			Object fieldValue = field.getFieldValue();
 
-			sqlValuesAppend(sql,field);
+			sql += appendFValue(field);
 		}
 		
 		//fill extend field
@@ -671,7 +679,7 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 			sql += field.getFieldName()+"=";
 			Object fieldValue = field.getFieldValue();
 
-			sqlValuesAppend(sql,field);
+			sql += appendFValue(field);
 		}
 		
 		//fill extend field

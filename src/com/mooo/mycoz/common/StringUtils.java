@@ -1037,18 +1037,13 @@ public class StringUtils {
 	}
 
 	public static String fieldValue(Object entity) throws NullPointerException{
-		String fieldValue;
 
-		if(entity.getClass().isAssignableFrom(Short.class)
-				||entity.getClass().isAssignableFrom(Integer.class)
-				||entity.getClass().isAssignableFrom(Long.class)
-				||entity.getClass().isAssignableFrom(Float.class)
-				||entity.getClass().isAssignableFrom(Double.class)){
-			fieldValue = entity.toString();
-		}else {
-			fieldValue = "'"+formatSQLValue(entity.toString())+"'";
+		if(entity==null) return "";
+
+		String fieldValue = entity.toString();
+		if(entity.getClass().isAssignableFrom(String.class)) {
+			fieldValue = "'"+formatSQLValue(fieldValue)+"'";
 		}
-
 		return fieldValue;
 	}
 	
