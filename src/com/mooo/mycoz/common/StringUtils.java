@@ -891,7 +891,7 @@ public class StringUtils {
 		for(int i = 0; i < word.length(); i++){
 			char c = word.charAt(i);
 
-			if(isLower && Character.isLowerCase(c)!=isLower) {
+			if(isLower && Character.isLowerCase(c)!=isLower && !Character.isDigit(c)) {
 				a1 += p;
 			}
 			isLower = Character.isLowerCase(word.charAt(i));
