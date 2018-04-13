@@ -1025,7 +1025,7 @@ public class StringUtils {
 		if(sdate == null){
 			return "";
 		}else {
-			return CalendarUtils.dtformat(sdate);
+			return CalendarUtils.dtformat(sdate,CalendarUtils.YMD);
 		}
 	}
 

@@ -1,5 +1,6 @@
 package com.mooo.mycoz.db;
 
+import com.mooo.mycoz.common.JDBCUtil;
 import com.mooo.mycoz.common.StringUtils;
 import com.mooo.mycoz.db.pool.DbConnectionManager;
 
@@ -38,7 +39,7 @@ public class DbUtil {
 				}
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.fillInStackTrace();
 		}
 		
 		return false;
@@ -73,32 +74,9 @@ public class DbUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-
-			try {
-				if (result != null)
-					result.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				if (stmt != null)
-					stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				if(isClose)
-					myConn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
+			JDBCUtil.release(result,stmt,myConn,isClose);
 		}
-		
 		return retrieveList;
-
 	}
 
 	public static int type(Connection connection,String catalog,String table,String column) {
@@ -124,14 +102,7 @@ public class DbUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-
-			try {
-				if(isClose)
-					myConn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
+			JDBCUtil.release(myConn,isClose);
 		}
 		return -100;
 	}

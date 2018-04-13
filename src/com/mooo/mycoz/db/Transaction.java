@@ -1,15 +1,10 @@
 package com.mooo.mycoz.db;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.mooo.mycoz.db.pool.DbConnectionManager;
 
 public class Transaction {
-	private static Log log = LogFactory.getLog(Transaction.class);
 
 	private Connection connection;
 	private boolean supportsTransactions;
@@ -22,12 +17,6 @@ public class Transaction {
 				if (supportsTransactions) {
 					connection.setAutoCommit(false);
 				}
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			if(log.isDebugEnabled())log.debug("NullPointerException :" + e.getMessage());
-		} catch (SQLException e) {
-			e.printStackTrace();
-			if(log.isDebugEnabled())log.debug("SQLException:" + e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -47,11 +36,6 @@ public class Transaction {
 				if (connection != null)
 					connection.rollback();
 			}
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			if(log.isDebugEnabled())log.debug("NullPointerException :" + e.getMessage());
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -63,11 +47,6 @@ public class Transaction {
 				if (connection != null)
 					connection.commit();
 			}
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			if(log.isDebugEnabled())log.debug("NullPointerException :" + e.getMessage());
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -82,11 +61,6 @@ public class Transaction {
 			if (connection != null) {
 				connection.close();
 			}
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			if(log.isDebugEnabled())log.debug("NullPointerException :" + e.getMessage());
-		} catch (SQLException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

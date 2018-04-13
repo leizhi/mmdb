@@ -15,44 +15,7 @@ public class IDGenerator {
 	//获取数据库最大值
 	private static final String SELECT_MAX_BY_TABLE = "SELECT MAX(ID) maxid FROM ";
 
-	/**
-	 *
-	 * 释放JDBC资源
-	 * @param result
-	 *            结果集
-	 * @param pstmt
-	 *            执行对性
-	 * @param notConn
-	 *			是否关闭
-	 * @param conn
-	 *			JDBC连接
-	 * @return void
-	 */
-	private synchronized static void release(ResultSet result,PreparedStatement pstmt,
-											 boolean notConn,Connection conn){
-		try {
-			if (result != null)
-				result.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 
-		try {
-			if (pstmt != null)
-				pstmt.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			if (notConn) {
-				if (conn != null)
-					conn.close();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 *
@@ -85,7 +48,7 @@ public class IDGenerator {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			release(result,pstmt,notConn,conn);
+			JDBCUtil.release(result,pstmt,notConn,conn);
 		}
 		return nextId;
 	} // getNextID(String table)
@@ -222,7 +185,7 @@ public class IDGenerator {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			release(result,pstmt,notConn,conn);
+			JDBCUtil.release(result,pstmt,notConn,conn);
 		}
 		return maxN;
 	}

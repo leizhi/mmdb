@@ -16,7 +16,7 @@ public class MysqlSQL extends AbstractSQL {
 	}
 
 	public String selfDateSQL(Date date) {
-		return "date'"+CalendarUtils.dformat(date) +"',";
+		return "date'"+CalendarUtils.dtformat(date,CalendarUtils.YMD) +"',";
 	}
 
 }

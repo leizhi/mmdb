@@ -1,5 +1,6 @@
 package com.mooo.mycoz.db;
 
+import com.mooo.mycoz.common.JDBCUtil;
 import com.mooo.mycoz.common.StringUtils;
 import com.mooo.mycoz.db.conf.DbConf;
 import com.mooo.mycoz.db.pool.DbConnectionManager;
@@ -55,19 +56,7 @@ public class DBObject<T> implements DbProcess{
 			stmt = myConn.createStatement();
 			stmt.execute(executeSQL);
 		}finally {
-
-			try {
-				stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			try {
-				if(isClose)
-					myConn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			JDBCUtil.release(stmt,myConn,isClose);
 		}
 	}
 
@@ -119,50 +108,10 @@ public class DBObject<T> implements DbProcess{
 	 * count
 	 */
 	public synchronized int count(Connection connection) throws SQLException {
-		int total=0;
-
-		Connection myConn = null;
-		boolean isClose = true;
-		
-		Statement stmt = null;
 		String executeSQL = processSQL.countSQL(this);
-		if (log.isDebugEnabled()) log.debug("countSQL:" + executeSQL);
-		try {
-			if(connection != null){
-				myConn = connection;
-				isClose = false;
-			} else {
-				myConn = DbConnectionManager.getConnection();
-				isClose = true;
-			}
-			
-			stmt = myConn.createStatement();
-			ResultSet result = stmt.executeQuery(executeSQL);
-			
-			if (result.next()) {
-				total = result.getInt(1);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-					stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
-			try {
-				if(isClose)
-					myConn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}			
-		}
-		return total;
+		return new DBExecute().execute(connection,executeSQL);
 	}
-	
-	
+
 	public int count() throws SQLException {
 		return count(null);
 	}
@@ -244,19 +193,7 @@ public class DBObject<T> implements DbProcess{
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-
-			try {
-					stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
-			try {
-				if(isClose)
-					myConn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			JDBCUtil.release(stmt,myConn,isClose);
 		}
 		return retrieveList;
 	}
@@ -339,20 +276,7 @@ public class DBObject<T> implements DbProcess{
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-	
-			try {
-				if (stmt != null)
-					stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-	
-			try {
-				if(isClose)
-					myConn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			JDBCUtil.release(stmt,myConn,isClose);
 		}
 	}
 	
