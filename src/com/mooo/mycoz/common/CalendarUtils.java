@@ -58,8 +58,7 @@ package com.mooo.mycoz.common;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Calendar;
+import java.util.*;
 
 /**
  * Utility class to peform common String manipulation algorithms.
@@ -79,6 +78,10 @@ public class CalendarUtils {
 	public static final String YMD = "yyyy-MM-dd";
 
 	public static final String NYMD = "yyyyMMdd";
+
+	public static final String HHMM = "HH:mm";
+
+	public static final String YEAR = "yyyy";
 
 	public static String dtformat(Date date,String sformat){
 		return new SimpleDateFormat(sformat).format(date);
@@ -108,42 +111,165 @@ public class CalendarUtils {
 		return null;
 	}
 
-	public static String dtformat(Date date){
-		return dtformat(date,YMDHMS);
+	public static Date getDate() {
+
+		TimeZone tz = TimeZone.getDefault();
+		Calendar now = Calendar.getInstance(tz);
+		Date date = now.getTime();
+
+		return date;
 	}
 
-	public static Date dtparse(String dateValue) throws ParseException{
-		return dtparse(dateValue,YMDHMS);
+	public static String getNowTime() {
+		return dtformat(getDate(),HHMM);
 	}
-	
-	public static String dtformat2(Date date){
-		return dtformat(date,YMDHM);
+
+	public static String getNowYear() {
+		return dtformat(getDate(),YEAR);
 	}
-	public static Date dtparse2(String dateValue) throws ParseException{
-		return dtparse(dateValue,YMDHM);
+
+	public static String getNow() {
+		return dtformat(getDate(),YMDHM);
 	}
-	
-	public static String dformat(Date date){
-		return dtformat(date,YMD);
+
+	public static String getIdPrifix() {
+		TimeZone tz = TimeZone.getDefault();
+		Calendar now = Calendar.getInstance(tz);
+		String prefix;
+		int tmp = now.get(Calendar.YEAR);
+		prefix = (tmp + "").substring(2, 4);
+		tmp = now.get(Calendar.MONTH) + 1;
+		if (tmp < 10)
+			prefix += "0" + tmp;
+		else
+			prefix += tmp;
+
+		return prefix;
 	}
-	
-	public static Date dparse(String dateValue) throws ParseException{
-		return dtparse(dateValue,YMD);
+
+	public static String getYYMM() {
+		return getIdPrifix();
 	}
-	
-	public static String dformat2(Date date){
-		return dtformat(date,NYMD);
+
+	public static String getYY() {
+		TimeZone tz = TimeZone.getDefault();
+		Calendar now = Calendar.getInstance(tz);
+		String prefix;
+		int tmp = now.get(Calendar.YEAR);
+		prefix = (tmp + "").substring(2, 4);
+
+		return prefix;
 	}
-	
-	public static Date dparse2(String dateValue) throws ParseException{
-		return dtparse(dateValue,NYMD);
+
+	public static String getLastMonthToday() {
+		// get default date in yyyy-mm-dd format
+		TimeZone tz = TimeZone.getDefault();
+		// tz.setID("Asia/Jakarta");
+		Calendar now = Calendar.getInstance(tz);
+		String prefix;
+		int yy = now.get(Calendar.YEAR);
+		int tmp = now.get(Calendar.MONTH);
+		if (tmp == 0) {
+			prefix = (yy - 1) + "";
+			tmp = 12;
+		} else {
+			prefix = yy + "";
+		}
+		if (tmp < 10)
+			prefix += "-0" + tmp;
+		else
+			prefix += "-" + tmp;
+
+		tmp = now.get(Calendar.DATE);
+		if (tmp < 10)
+			prefix += "-0" + tmp;
+		else
+			prefix += "-" + tmp;
+
+		return prefix;
+	} /* getLastMonthToday() */
+
+	public static String getToday() {
+		// get default date in yyyy-mm-dd format
+		TimeZone tz = TimeZone.getDefault();
+		Calendar now = Calendar.getInstance(tz);
+
+		String prefix;
+		int tmp = now.get(Calendar.YEAR);
+		prefix = tmp + "";
+		tmp = now.get(Calendar.MONTH) + 1;
+		if (tmp < 10)
+			prefix += "-0" + tmp;
+		else
+			prefix += "-" + tmp;
+
+		tmp = now.get(Calendar.DATE);
+		if (tmp < 10)
+			prefix += "-0" + tmp;
+		else
+			prefix += "-" + tmp;
+
+		return prefix;
+	} /* getToday() */
+
+	//	private static List<?> search(Class<?> clazz) {
+//		List<?> searchList = null;
+//		try {
+//			Object obj = clazz.newInstance();
+//			Method execMethod = clazz.getMethod("searchAndRetrieveList");
+//			searchList = (List<?>) execMethod.invoke(obj);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return searchList;
+//	}
+//
+//	public static Object randomNo(Class<?> clazz) {
+//		List<?> searchList = search(clazz);
+//		Random random = new Random();
+//		int randomId = searchList.size();
+//		if (randomId > 0) {
+//			random.nextInt(randomId);
+//			return searchList.get(randomId);
+//		} else {
+//			randomId = 0;
+//		}
+//		return 0;
+//	}
+
+	public static int randomInt(int max) {
+		if (max > 0)
+			return new Random().nextInt(max);
+
+		return 0;
 	}
-	
-	public static String dformat3(Date date){
-		return dtformat(date,NYMDH);
+
+	public static Object randomNo(List<?> retrieveList) {
+		Random random = new Random();
+		int randomId = retrieveList.size();
+		if (randomId > 0) {
+			random.nextInt(randomId);
+			return retrieveList.get(randomId);
+		} else {
+			randomId = 0;
+		}
+		return 0;
 	}
-	
-	public static Date dparse3(String dateValue) throws ParseException{
-		return dtparse(dateValue,NYMDH);
+
+	public static Date randomDate() {
+		Date randomDate = new Date();
+		Random random = new Random();
+
+		Calendar cal = Calendar.getInstance();
+		cal.set(2010, 8, 1);
+		long start = cal.getTimeInMillis();
+		cal.set(2010, 9, 13);
+		long end = cal.getTimeInMillis();
+		for (int i = 0; i < 10; i++) {
+			randomDate = new Date(start
+					+ (long) (random.nextDouble() * (end - start)));
+		}
+
+		return randomDate;
 	}
 }
