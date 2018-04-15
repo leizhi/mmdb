@@ -249,7 +249,7 @@ public class DBObject<T> implements DbProcess{
 					type = resultSetMetaData.getColumnType(i);
 					columnName = resultSetMetaData.getColumnName(i);
 
-					if (log.isDebugEnabled()) log.debug("type:" + type+"\tcolumnName:"+columnName);
+//					if (log.isDebugEnabled()) log.debug("type:" + type+"\tcolumnName:"+columnName);
 
 					if(type == Types.TIMESTAMP || type == Types.DATE){
 						DbBridgingBean.bindProperty(this,
