@@ -36,37 +36,12 @@ public class DBObject<T> implements DbProcess{
 
 	}
 
-	private void execute(Connection connection,String executeSQL) throws SQLException {
-
-		if (log.isDebugEnabled()) log.debug("executeSQL:" + executeSQL);
-
-		Connection myConn = null;
-		boolean isClose = true;
-
-		Statement stmt = null;
-		try{
-			if(connection != null){
-				myConn = connection;
-				isClose = false;
-			} else {
-				myConn = DbConnectionManager.getConnection();
-				isClose = true;
-			}
-
-			stmt = myConn.createStatement();
-			stmt.execute(executeSQL);
-		}finally {
-			JDBCUtil.release(stmt,myConn,isClose);
-		}
-	}
-
 	/**
 	 * add
 	 */ 
 	public synchronized void add(Connection connection) throws SQLException {
 		String addSQL = processSQL.addSQL(this);
-		if (log.isDebugEnabled()) log.debug("addSQL:" + addSQL);
-		execute(connection,addSQL);
+		new DBExecute().execute(connection,addSQL);
 	}
 	
 	public void add() throws SQLException {
@@ -78,12 +53,10 @@ public class DBObject<T> implements DbProcess{
 	 */ 
 	public synchronized void update(Connection connection) throws SQLException {
 		String updateSQL = processSQL.updateSQL(this);
-		if (log.isDebugEnabled()) log.debug("updateSQL:" + updateSQL);
 		if(!updateSQL.contains(AbstractSQL.WHERE_S)) {
 			return;
 		}
-
-		execute(connection,updateSQL);
+		new DBExecute().execute(connection,updateSQL);
 	}
 	
 	public void update() throws SQLException {
@@ -96,12 +69,10 @@ public class DBObject<T> implements DbProcess{
 	
 	public synchronized void delete(Connection connection) throws SQLException {
 		String deleteSQL = processSQL.deleteSQL(this);
-		if (log.isDebugEnabled()) log.debug("deleteSQL:" + deleteSQL);
 		if(!deleteSQL.contains(AbstractSQL.WHERE_S)) {
 			return;
 		}
-
-		execute(connection,deleteSQL);
+		new DBExecute().execute(connection,deleteSQL);
 	}
 	
 	public void delete() throws SQLException {
@@ -113,7 +84,7 @@ public class DBObject<T> implements DbProcess{
 	 */
 	public synchronized int count(Connection connection) throws SQLException {
 		String executeSQL = processSQL.countSQL(this);
-		return new DBExecute().execute(connection,executeSQL);
+		return new DBExecute().executeInt(connection,executeSQL);
 	}
 
 	public int count() throws SQLException {
@@ -133,7 +104,7 @@ public class DBObject<T> implements DbProcess{
 		
 		Statement stmt = null;
 		String executeSQL = processSQL.searchSQL(this);
-		if (log.isDebugEnabled()) log.debug("executeSQL:" + executeSQL);
+		if (log.isDebugEnabled()) log.debug("searchSQL:" + executeSQL);
 		
 		try {
 			retrieveList = new ArrayList<Object>();
@@ -227,7 +198,7 @@ public class DBObject<T> implements DbProcess{
 
 		executeSQL += " LIMIT 1";
 		
-		if (log.isDebugEnabled()) log.debug("executeSQL:" + executeSQL);
+		if (log.isDebugEnabled()) log.debug("retrieveSQL:" + executeSQL);
 
 		try {
 			if(connection != null){

@@ -27,7 +27,7 @@ public class MultiDBObject extends MysqlMultiSQL implements MultiDbProcess {
 
 		List<Object> retrieveList = null;
 		String doSql = searchSQL();
-		if (log.isDebugEnabled()) log.debug("searchSQL->" + doSql);
+		if (log.isDebugEnabled()) log.debug("searchSQL:" + doSql);
 
 		Connection myConn = null;
 		Statement stmt = null;
@@ -120,8 +120,7 @@ public class MultiDBObject extends MysqlMultiSQL implements MultiDbProcess {
 
 		String doSql = buildCountSQL();
 		
-		if (log.isDebugEnabled()) log.debug("countSQL->" + doSql);
-		int total= new DBExecute().execute(connection,doSql);
+		int total= new DBExecute().executeInt(connection,doSql);
 
 		long finishTime = System.currentTimeMillis();
 		long hours = (finishTime - startTime) / 1000 / 60 / 60;
@@ -142,7 +141,7 @@ public class MultiDBObject extends MysqlMultiSQL implements MultiDbProcess {
 
 		List<Map> retrieveList = null;
 
-		if (log.isDebugEnabled()) log.debug("searchSQL->" + executeSQL);
+		if (log.isDebugEnabled()) log.debug("searchSQL:" + executeSQL);
 
 		Connection myConn = null;
 		Statement stmt = null;
