@@ -332,7 +332,9 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 	
 	public void entityFillField(Object entity) {
 		try {
-			
+
+			entityField.clear();
+
 			prefix = DbConf.getInstance().getDbHumpInterval();
 			
 			if(prefix !=null && prefix.equals("case")){
@@ -351,29 +353,33 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 			String method;
 			String field;
 			
-			int columnType = 0;
-			String columnName = null;
-			boolean isPrimaryKey = false;
+			int columnType;
+			String columnName;
+			boolean isPrimaryKey;
 			
 			for (Iterator<String> it = methods.iterator(); it.hasNext();) {
 				method = it.next();
 				if(method.indexOf("get")==0){
 					
-					Method getMethod;
-					getMethod = entity.getClass().getMethod(method);
-					
-					Object columnValue = getMethod.invoke(entity);
-					
-					if(columnValue !=null) {
+					Method getMethod = entity.getClass().getMethod(method);
+
+					Object getMethodValue = getMethod.invoke(entity);
+
+//					System.out.println(getMethod.getName() + "->"+getMethodValue);
+
+					if(getMethodValue !=null) {
 						field = method.substring(method.indexOf("get")+3);
 						
 						columnName = StringUtils.humpToSplit(field,prefix);
 						
 						columnType = DbUtil.type(catalog,table,columnName);
+
+//						System.out.println(getMethod.getName() + "->"+getMethodValue+"columnType:"+columnType);
+
 						if(columnType!=-100){
-//						System.out.println(columnName+" "+catalog+" "+table+" "+ columnValue+" "+columnType+" "+isPrimaryKey);
+//							System.out.println(columnName+" "+catalog+" "+table+" "+ columnValue+" "+columnType+" "+isPrimaryKey);
 							isPrimaryKey = DbUtil.isPrimaryKey(catalog, table,columnName);
-							setField(columnName,columnValue,columnType,isPrimaryKey);
+							setField(columnName,getMethodValue,columnType,isPrimaryKey);
 						}
 					}
 				}
@@ -512,11 +518,11 @@ public abstract class AbstractSQL implements ProcessSQL,Serializable{
 		if(fieldValue==null || fieldValue.equals("")) return "''";
 
 		if(field.getFieldType()==Types.TIMESTAMP){
-			appends= "'"+CalendarUtils.dtformat(((Date)fieldValue),CalendarUtils.YMDHMS)+"'";
+			appends = "'"+CalendarUtils.dtformat(((Date)fieldValue),CalendarUtils.YMDHMS)+"'";
 		}else if(field.getFieldType()==Types.DATE){
-			appends= "'"+CalendarUtils.dtformat(((Date)fieldValue),CalendarUtils.YMD)+"'";
+			appends = "'"+CalendarUtils.dtformat(((Date)fieldValue),CalendarUtils.YMD)+"'";
 		} else {
-			appends= StringUtils.fieldValue(fieldValue);
+			appends = StringUtils.fieldValue(fieldValue);
 		}
 		return appends;
 //		System.out.println(sql);

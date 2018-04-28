@@ -434,11 +434,11 @@ public class DbBridgingBean {
 		
 	}
 	
-	public static void noNull(Object obj) throws NullPointerException{
-		if(obj == null){
-			throw new NullPointerException("cant no null");
-		}
-	}
+//	public static void noNull(Object obj) throws NullPointerException{
+//		if(obj == null){
+//			throw new NullPointerException("cant no null");
+//		}
+//	}
 	
 	public void dbToBean(String catalog, String table){
 		prefix = DbConf.getInstance().getDbHumpInterval();

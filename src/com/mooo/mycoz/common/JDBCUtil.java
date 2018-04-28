@@ -33,20 +33,15 @@ public class JDBCUtil{
             e.printStackTrace();
         }
 
-        try {
-            if (notConn) {
-                if (conn != null)
-                    conn.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        release(conn,notConn);
     }
 
-    public synchronized static void release(Connection myConn,boolean isClose){
+    public synchronized static void release(Connection myConn,boolean notConn){
         try {
-            if(isClose)
-                myConn.close();
+            if (notConn) {
+                if (myConn != null)
+                    myConn.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -70,5 +65,14 @@ public class JDBCUtil{
             e.printStackTrace();
         }
         release(stmt,myConn,isClose);
+    }
+
+    public synchronized static void release(Statement stmt){
+        try {
+                if (stmt != null)
+                    stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -39,7 +39,7 @@ public class DBObject<T> implements DbProcess{
 	/**
 	 * add
 	 */ 
-	public synchronized void add(Connection connection) throws SQLException {
+	public void add(Connection connection) throws SQLException {
 		String addSQL = processSQL.addSQL(this);
 		new DBExecute().execute(connection,addSQL);
 	}
@@ -51,7 +51,7 @@ public class DBObject<T> implements DbProcess{
 	/**
 	 * update
 	 */ 
-	public synchronized void update(Connection connection) throws SQLException {
+	public void update(Connection connection) throws SQLException {
 		String updateSQL = processSQL.updateSQL(this);
 		if(!updateSQL.contains(AbstractSQL.WHERE_S)) {
 			return;
@@ -67,7 +67,7 @@ public class DBObject<T> implements DbProcess{
 	 * delete
 	 */ 
 	
-	public synchronized void delete(Connection connection) throws SQLException {
+	public void delete(Connection connection) throws SQLException {
 		String deleteSQL = processSQL.deleteSQL(this);
 		if(!deleteSQL.contains(AbstractSQL.WHERE_S)) {
 			return;
@@ -82,7 +82,7 @@ public class DBObject<T> implements DbProcess{
 	/**
 	 * count
 	 */
-	public synchronized int count(Connection connection) throws SQLException {
+	public int count(Connection connection) throws SQLException {
 		String executeSQL = processSQL.countSQL(this);
 		return new DBExecute().executeInt(connection,executeSQL);
 	}
@@ -94,7 +94,7 @@ public class DBObject<T> implements DbProcess{
 	/**
 	 * searchAndRetrieveList
 	 */
-	public synchronized List<Object>  searchAndRetrieveList(Connection connection)
+	public List<Object>  searchAndRetrieveList(Connection connection)
 			throws SQLException {
 		
 		List<Object> retrieveList = null;
@@ -184,7 +184,7 @@ public class DBObject<T> implements DbProcess{
 	/**
 	 * retrieve
 	 */
-	public synchronized void retrieve(Connection connection) throws SQLException {
+	public void retrieve(Connection connection) throws SQLException {
 		
 		Connection myConn = null;
 		boolean isClose = true;

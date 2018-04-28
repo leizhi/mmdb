@@ -106,32 +106,17 @@
 
 package com.mooo.mycoz.db.pool;
 
+import com.mooo.mycoz.common.JDBCUtil;
+import com.mooo.mycoz.db.conf.DbConnectionPool;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.IOException;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.CallableStatement;
-import java.sql.Clob;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.NClob;
-import java.sql.PreparedStatement;
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Savepoint;
-import java.sql.Statement;
-import java.sql.Struct;
+import java.sql.*;
 import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.mooo.mycoz.db.conf.DbConnectionPool;
 
 /**
  * Default Yazd connection provider. It uses the excellent connection pool
@@ -306,46 +291,7 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 			log.debug("Total refresh interval = " + maxConnTime + " days");
 			log.debug("-----------------------------------------");
 
-			// Initialize the pool of connections with the mininum connections:
-			// Problems creating connections may be caused during reboot when
-			// the
-			// servlet is started before the database is ready. Handle this
-			// by waiting and trying again. The loop allows 5 minutes for
-			// db reboot.
-			boolean connectionsSucceeded = false;
-			int dbLoop = 20;
-
-			try {
-				for (int i = 1; i < dbLoop; i++) {
-					try {
-						for (int j = 0; j < currConnections; j++) {
-							createConn(j);
-						}
-						connectionsSucceeded = true;
-						break;
-					} catch (SQLException e) {
-						log.debug("--->Attempt ("
-								+ String.valueOf(i)
-								+ " of "
-								+ String.valueOf(dbLoop)
-								+ ") failed to create new connections set at startup: ");
-						log.debug("    " + e);
-						log.debug("    Will try again in 15 seconds...");
-						try {
-							Thread.sleep(15000);
-						} catch (InterruptedException e1) {
-						}
-					}
-				}
-				if (!connectionsSucceeded) { // All attempts at connecting to db
-												// exhausted
-					log.debug("\r\nAll attempts at connecting to Database exhausted");
-					throw new IOException();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new IOException();
-			}
+			initConn();
 
 			// Fire up the background housekeeping thread
 
@@ -427,19 +373,20 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 								stmt.close();
 							}
 						} catch (SQLException e1) {
+							e1.printStackTrace();
 						}
-						;
 					}
 				}
 
 				try {
-					Thread.sleep(20000);
+					Thread.sleep(200);
 				} // Wait 20 seconds for next cycle
 				catch (InterruptedException e) {
 					// Returning from the run method sets the internal
 					// flag referenced by Thread.isAlive() to false.
 					// This is required because we don't use stop() to
 					// shutdown this thread.
+					e.fillInStackTrace();
 					return;
 				}
 			}
@@ -480,8 +427,7 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 										&& (!connPool[roundRobin].isClosed())) {
 									conn = connPool[roundRobin];
 									connStatus[roundRobin] = 1;
-									connLockTime[roundRobin] = System
-											.currentTimeMillis();
+									connLockTime[roundRobin] = System.currentTimeMillis();
 									connLast = roundRobin;
 									gotOne = true;
 									break;
@@ -494,6 +440,7 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 							}
 						} while ((gotOne == false) && (loop < currConnections));
 					} catch (SQLException e1) {
+						e1.printStackTrace();
 					}
 
 					if (gotOne) {
@@ -505,8 +452,7 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 									createConn(currConnections);
 									currConnections++;
 								} catch (SQLException e) {
-									log.debug("Unable to create new connection: "
-											+ e);
+									e.printStackTrace();
 								}
 							}
 						}
@@ -515,8 +461,9 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 							log.debug("-----> Connections Exhausted!  Will wait and try "
 									+ "again in loop " + String.valueOf(outerloop));
 							
-							Thread.sleep(2000);
+							Thread.sleep(100);
 						} catch (InterruptedException e) {
+							e.fillInStackTrace();
 						}
 					}
 				} // End of try 10 times loop
@@ -524,6 +471,24 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 			} else {
 				log.debug("Unsuccessful getConnection() request during destroy()");
 			} // End if(available)
+
+			Statement statement=null;
+			try {
+				statement = conn.createStatement();
+				statement.execute("SELECT 1");
+			}catch (Exception e){
+				//e.printStackTrace();
+				log.debug("Connection was killed:"+e.getMessage());
+				try {
+					int match = idOfConnection(conn);
+					createConn(match);
+					conn = connPool[match];
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}finally {
+				JDBCUtil.release(statement);
+			}
 
 			return conn;
 		}
@@ -572,12 +537,55 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 			return res;
 		}
 
+		private void initConn() throws IOException {
+		// Initialize the pool of connections with the mininum connections:
+			// Problems creating connections may be caused during reboot when
+			// the
+			// servlet is started before the database is ready. Handle this
+			// by waiting and trying again. The loop allows 5 minutes for
+			// db reboot.
+			boolean connectionsSucceeded = false;
+			int dbLoop = 20;
+
+			try {
+				for (int i = 1; i < dbLoop; i++) {
+					try {
+						for (int j = 0; j < currConnections; j++) {
+							createConn(j);
+						}
+						connectionsSucceeded = true;
+						break;
+					} catch (SQLException e) {
+						log.debug("--->Attempt ("
+								+ String.valueOf(i)
+								+ " of "
+								+ String.valueOf(dbLoop)
+								+ ") failed to create new connections set at startup: ");
+						log.debug("    " + e);
+						log.debug("    Will try again in 15 seconds...");
+						try {
+							Thread.sleep(150);
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+					}
+				}
+				if (!connectionsSucceeded) { // All attempts at connecting to db
+					// exhausted
+					log.debug("\r\nAll attempts at connecting to Database exhausted");
+					throw new IOException();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new IOException();
+			}
+		}
+
 		private void createConn(int i) throws SQLException {
 			Date now = new Date();
 			try {
 				Class.forName(dbDriver);
-				connPool[i] = DriverManager.getConnection(dbServer, dbLogin,
-						dbPassword);
+				connPool[i] = DriverManager.getConnection(dbServer, dbLogin,dbPassword);
 				connStatus[i] = 0;
 				connID[i] = connPool[i].toString();
 				connLockTime[i] = 0;
@@ -586,10 +594,10 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 				log.debug(now.toString() + "  Opening connection "
 						+ i + " " + connPool[i]+ ":" +"  currConnections: "+currConnections
 						+"  maxConns: "+ maxConns);
-				
-			} catch (ClassNotFoundException e2) {
-				e2.printStackTrace();
-				throw new SQLException(e2.getMessage());
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new SQLException(e.getMessage());
 			}
 		}
 
@@ -698,6 +706,23 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 			}
 			return useCount;
 		}// End getUseCount()
+
+		/**
+		 * Returns the number of connections in use.
+		 */
+		// This method could be reduced to return a counter that is
+		// maintained by all methods that update connStatus.
+		// However, it is more efficient to do it this way because:
+		// Updating the counter would put an additional burden on the most
+		// frequently used methods; in comparison, this method is
+		// rarely used (although essential).
+		public void offUse() {
+			synchronized (connStatus) {
+				for (int i = 0; i < currConnections; i++) {
+					connStatus[i] = 0;
+				}
+			}
+		}// End offUse()
 
 	} // End class
 
@@ -927,13 +952,11 @@ public class DbConnectionDefaultPool extends ConnectionProvider {
 			return false;
 		}
 
-		public void setClientInfo(String name, String value)
-				throws SQLClientInfoException {
+		public void setClientInfo(String name, String value) throws SQLClientInfoException {
 
 		}
 
-		public void setClientInfo(Properties properties)
-				throws SQLClientInfoException {
+		public void setClientInfo(Properties properties) throws SQLClientInfoException {
 
 		}
 
