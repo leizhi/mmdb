@@ -13,10 +13,10 @@ import java.sql.Statement;
 public class DBExecute {
 	private static Log log = LogFactory.getLog(DBObject.class);
 
-	public int executeInt(Connection connection,String executeSQL) throws SQLException {
+	public int executeInt(Connection connection, String executeSQL) throws SQLException {
 		if (log.isDebugEnabled()) log.debug("executeSQL:" + executeSQL);
 
-		int total=0;
+		int total = 0;
 
 		Connection myConn = null;
 		boolean isClose = true;
@@ -24,7 +24,7 @@ public class DBExecute {
 		Statement stmt = null;
 
 		try {
-			if(connection != null){
+			if (connection != null) {
 				myConn = connection;
 				isClose = false;
 			} else {
@@ -41,13 +41,13 @@ public class DBExecute {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			JDBCUtil.release(stmt,myConn,isClose);
+			JDBCUtil.release(stmt, myConn, isClose);
 		}
 		return total;
 	}
 
 
-	public void execute(Connection connection,String executeSQL) throws SQLException {
+	public void execute(Connection connection, String executeSQL) throws SQLException {
 
 		if (log.isDebugEnabled()) log.debug("executeSQL:" + executeSQL);
 
@@ -55,8 +55,8 @@ public class DBExecute {
 		boolean isClose = true;
 
 		Statement stmt = null;
-		try{
-			if(connection != null){
+		try {
+			if (connection != null) {
 				myConn = connection;
 				isClose = false;
 			} else {
@@ -66,8 +66,12 @@ public class DBExecute {
 
 			stmt = myConn.createStatement();
 			stmt.execute(executeSQL);
-		}finally {
-			JDBCUtil.release(stmt,myConn,isClose);
+		} finally {
+			JDBCUtil.release(stmt, myConn, isClose);
 		}
+	}
+
+	public void execute(String executeSQL) throws SQLException {
+		execute(null,executeSQL);
 	}
 }

@@ -14,7 +14,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DBObject<T> implements DbProcess{
+public class DBObject extends DBExecute implements DbProcess{
 
 	private static Log log = LogFactory.getLog(DBObject.class);
 
@@ -41,7 +41,7 @@ public class DBObject<T> implements DbProcess{
 	 */ 
 	public void add(Connection connection) throws SQLException {
 		String addSQL = processSQL.addSQL(this);
-		new DBExecute().execute(connection,addSQL);
+		execute(connection,addSQL);
 	}
 	
 	public void add() throws SQLException {
@@ -56,7 +56,7 @@ public class DBObject<T> implements DbProcess{
 		if(!updateSQL.contains(AbstractSQL.WHERE_S)) {
 			return;
 		}
-		new DBExecute().execute(connection,updateSQL);
+		execute(connection,updateSQL);
 	}
 	
 	public void update() throws SQLException {
@@ -72,7 +72,7 @@ public class DBObject<T> implements DbProcess{
 		if(!deleteSQL.contains(AbstractSQL.WHERE_S)) {
 			return;
 		}
-		new DBExecute().execute(connection,deleteSQL);
+		execute(connection,deleteSQL);
 	}
 	
 	public void delete() throws SQLException {
@@ -84,7 +84,7 @@ public class DBObject<T> implements DbProcess{
 	 */
 	public int count(Connection connection) throws SQLException {
 		String executeSQL = processSQL.countSQL(this);
-		return new DBExecute().executeInt(connection,executeSQL);
+		return executeInt(connection,executeSQL);
 	}
 
 	public int count() throws SQLException {
