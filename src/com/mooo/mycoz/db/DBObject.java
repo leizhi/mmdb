@@ -14,7 +14,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DBObject extends DBExecute implements DbProcess{
+public class DBObject<T> extends DBExecute implements DbProcess{
 
 	private static Log log = LogFactory.getLog(DBObject.class);
 
