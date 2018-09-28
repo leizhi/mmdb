@@ -33,7 +33,55 @@ public class DBObject<T> extends DBExecute implements DbProcess{
 		if(prefix !=null && prefix.equals("case")){
 			prefix = null;
 		}
+	}
 
+	public void setField(String fieldName, Object fieldValue, int fieldType,
+						 boolean isPrimaryKey) {
+		processSQL.setField(fieldName, fieldValue, fieldType, isPrimaryKey);
+	}
+
+	public void setLike(String fieldName, Object fieldValue) {
+		processSQL.setLike(fieldName, fieldValue);
+	}
+
+	public void setLike2(String fieldName, Object fieldValue) {
+		processSQL.setLike2(fieldName, fieldValue);
+	}
+
+	public void setGreater(String fieldName, Object fieldValue) {
+		processSQL.setGreater(fieldName, fieldValue);
+	}
+
+	public void setGreaterEqual(String fieldName, Object fieldValue) {
+		processSQL.setGreaterEqual(fieldName, fieldValue);
+	}
+
+	public void setLess(String fieldName, Object fieldValue) {
+		processSQL.setLess(fieldName, fieldValue);
+	}
+
+	public void setLessEqual(String fieldName, Object fieldValue) {
+		processSQL.setLessEqual(fieldName, fieldValue);
+	}
+
+	public void setNotEqual(String fieldName, Object fieldValue) {
+		processSQL.setNotEqual(fieldName, fieldValue);
+	}
+
+	public void setWhereIn(String fieldName, Object fieldValue) {
+		processSQL.setWhereIn(fieldName, fieldValue);
+	}
+
+	public void setRecord(int offsetRecord, int maxRecords) {
+		processSQL.setRecord(offsetRecord, maxRecords);
+	}
+
+	public void addGroupBy(String fieldName) {
+		processSQL.addGroupBy(fieldName);
+	}
+
+	public void addOrderBy(String fieldName) {
+		processSQL.addOrderBy(fieldName);
 	}
 
 	/**
@@ -94,8 +142,7 @@ public class DBObject<T> extends DBExecute implements DbProcess{
 	/**
 	 * searchAndRetrieveList
 	 */
-	public List<Object>  searchAndRetrieveList(Connection connection)
-			throws SQLException {
+	public List<Object>  searchAndRetrieveList(Connection connection){
 		
 		List<Object> retrieveList = null;
 
@@ -176,15 +223,14 @@ public class DBObject<T> extends DBExecute implements DbProcess{
 		return retrieveList;
 	}
 	
-	public List<Object> searchAndRetrieveList()
-			throws SQLException {
+	public List<Object> searchAndRetrieveList(){
 		return searchAndRetrieveList(null);
 	}
-	
+
 	/**
 	 * retrieve
 	 */
-	public void retrieve(Connection connection) throws SQLException {
+	public void retrieve(Connection connection) {
 		
 		Connection myConn = null;
 		boolean isClose = true;
@@ -264,55 +310,5 @@ public class DBObject<T> extends DBExecute implements DbProcess{
 	
 	public void retrieve() throws SQLException {
 		retrieve(null);
-	}
-
-	public void setField(String fieldName, Object fieldValue, int fieldType,
-			boolean isPrimaryKey) {
-		processSQL.setField(fieldName, fieldValue, fieldType, isPrimaryKey);
-	}
-
-	public void setLike(String fieldName, Object fieldValue) {
-		processSQL.setLike(fieldName, fieldValue);
-	}
-
-	public void setLike2(String fieldName, Object fieldValue) {
-		processSQL.setLike2(fieldName, fieldValue);
-	}
-
-	public void setGreater(String fieldName, Object fieldValue) {
-		processSQL.setGreater(fieldName, fieldValue);
-	}
-	
-	public void setGreaterEqual(String fieldName, Object fieldValue) {
-		processSQL.setGreaterEqual(fieldName, fieldValue);
-	}
-
-	public void setLess(String fieldName, Object fieldValue) {
-		processSQL.setLess(fieldName, fieldValue);
-	}
-	
-	public void setLessEqual(String fieldName, Object fieldValue) {
-		processSQL.setLessEqual(fieldName, fieldValue);
-	}
-
-	public void setNotEqual(String fieldName, Object fieldValue) {
-		processSQL.setNotEqual(fieldName, fieldValue);
-	}
-	
-	public void setWhereIn(String fieldName, Object fieldValue) {
-		processSQL.setWhereIn(fieldName, fieldValue);
-	}
-
-	public void setRecord(int offsetRecord, int maxRecords) {
-		processSQL.setRecord(offsetRecord, maxRecords);
-	}
-
-
-	public void addGroupBy(String fieldName) {
-		processSQL.addGroupBy(fieldName);
-	}
-
-	public void addOrderBy(String fieldName) {
-		processSQL.addOrderBy(fieldName);
 	}
 }

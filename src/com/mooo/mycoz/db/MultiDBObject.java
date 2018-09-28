@@ -19,10 +19,16 @@ public class MultiDBObject extends MysqlMultiSQL implements MultiDbProcess {
 	
 	private static Log log = LogFactory.getLog(MultiDBObject.class);
 
+	private DBExecute dbExecute;
+
+	public  MultiDBObject(){
+		dbExecute = new DBExecute();
+	}
+
 	/**
 	 * 
 	 */
-	public synchronized List<Object> searchAndRetrieveList(Connection connection) throws SQLException{
+	public synchronized List<Object> searchAndRetrieveList(Connection connection){
 		long startTime = System.currentTimeMillis();
 
 		List<Object> retrieveList = null;
@@ -107,7 +113,7 @@ public class MultiDBObject extends MysqlMultiSQL implements MultiDbProcess {
 	/**
 	 * 
 	 */
-	public List<Object> searchAndRetrieveList() throws SQLException{
+	public List<Object> searchAndRetrieveList(){
 		return searchAndRetrieveList(null);
 	}
 	
@@ -115,12 +121,12 @@ public class MultiDBObject extends MysqlMultiSQL implements MultiDbProcess {
 		return count(null);
 	}
 	
-	public synchronized int count(Connection connection) throws SQLException {
+	public int count(Connection connection) throws SQLException {
 		long startTime = System.currentTimeMillis();
 
 		String doSql = buildCountSQL();
 		
-		int total= new DBExecute().executeInt(connection,doSql);
+		int total= dbExecute.executeInt(connection,doSql);
 
 		long finishTime = System.currentTimeMillis();
 		long hours = (finishTime - startTime) / 1000 / 60 / 60;
@@ -135,63 +141,8 @@ public class MultiDBObject extends MysqlMultiSQL implements MultiDbProcess {
 	/**
 	 *
 	 */
-	public synchronized List<Map> executeAndRetrieveList(Connection connection,String executeSQL){
-
-		long startTime = System.currentTimeMillis();
-
-		List<Map> retrieveList = null;
-
-		if (log.isDebugEnabled()) log.debug("searchSQL:" + executeSQL);
-
-		Connection myConn = null;
-		Statement stmt = null;
-		boolean isClose = true;
-
-		try {
-			retrieveList = new ArrayList();
-
-			if(connection != null){
-				myConn = connection;
-				isClose = false;
-			} else {
-				myConn = DbConnectionManager.getConnection();
-				isClose = true;
-			}
-
-			stmt = myConn.createStatement();
-			ResultSet result = stmt.executeQuery(executeSQL);
-			ResultSetMetaData resultSetMetaData = result.getMetaData();
-
-			String column;
-			Object value;
-			while (result.next()) {
-
-				Map<String, Object> row = new HashMap<String, Object>();
-
-				for (int i=1; i < resultSetMetaData.getColumnCount()+1; i++) {
-					column = resultSetMetaData.getColumnLabel(i);
-					value = result.getObject(i);
-
-//					System.out.println(column+"\t"+value);
-
-					row.put(column,value);
-				}
-				retrieveList.add(row);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			JDBCUtil.release(stmt,myConn,isClose);
-		}
-
-		long finishTime = System.currentTimeMillis();
-		long hours = (finishTime - startTime) / 1000 / 60 / 60;
-		long minutes = (finishTime - startTime) / 1000 / 60 - hours * 60;
-		long seconds = (finishTime - startTime) / 1000 - hours * 60 * 60 - minutes * 60;
-
-		if (log.isDebugEnabled()) log.debug(finishTime - startTime);
-		if (log.isDebugEnabled()) log.debug("search expends:   " + hours + ":" + minutes + ":" + seconds);
-		return retrieveList;
+	public List<Map> executeAndRetrieveList(Connection connection,String executeSQL){
+		return dbExecute.executeAndRetrieveList(connection,executeSQL);
 	}
 
 	public List<Map> executeAndRetrieveList(String executeSQL){
